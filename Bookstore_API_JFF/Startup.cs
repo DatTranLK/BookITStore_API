@@ -33,7 +33,7 @@ namespace Bookstore_API_JFF
             services.AddControllers();
 
             //For DI
-            services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+            services.AddScoped(typeof(IGenericRepository < > ), typeof(GenericRepository < > ));
 
             services.AddSwaggerGen(c =>
             {
