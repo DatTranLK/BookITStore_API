@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Repository.GenericRepositories
 {
-    public abstract class GenericRepository<T> : IGenericRepository<T> where T : class
+    public class GenericRepository<T> : IGenericRepository<T> where T : class
     {
         public Task<ServiceResponse<string>> Delete(object obj)
         {
