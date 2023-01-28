@@ -24,7 +24,7 @@ namespace Bookstore_API_JFF.Controllers
         {
             _logger = logger;
         }
-
+        
         [HttpGet]
         public IEnumerable<WeatherForecast> Get()
         {
