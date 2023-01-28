@@ -56,9 +56,11 @@ namespace Bookstore_API_JFF
             //For DI Repository
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             services.AddScoped<IAuthenticationRepository, AuthenticationRepository>();
+            services.AddScoped<ICategoryRepository, CategoryRepository>();
 
             //For DI Service
             services.AddScoped<IAuthenticationService, AuthenticationService>();
+            services.AddScoped<ICategoryService, CategoryService>();
             
             //For Json Cycle
             services.AddControllersWithViews().AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
@@ -70,7 +72,7 @@ namespace Bookstore_API_JFF
             //firebase auth
             FirebaseApp.Create(new AppOptions
             {
-                Credential = GoogleCredential.FromFile(@"E:\FPT University\prn231\Bookstore_API_JFF\Bookstore_API_JFF\Firebase\bookstoreapi-jff-firebase-adminsdk-hl1fb-43d7222427.json")
+                Credential = GoogleCredential.FromFile(@"..\Bookstore_API_JFF\Firebase\bookstoreapi-jff-firebase-adminsdk-hl1fb-43d7222427.json")
             }); ;
             /*services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(opt =>
