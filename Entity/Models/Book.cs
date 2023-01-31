@@ -30,11 +30,11 @@ namespace Entity.Models
         public int? PublisherId { get; set; }
         public int? SetBookId { get; set; }
         public bool? IsSetBook { get; set; }
-        public string Pdfurl { get; set; }
 
         public virtual Category Category { get; set; }
         public virtual Publisher Publisher { get; set; }
         public virtual SetBook SetBook { get; set; }
+        public virtual Ebook Ebook { get; set; }
         public virtual ICollection<BookImage> BookImages { get; set; }
         public virtual ICollection<DetailComboBook> DetailComboBooks { get; set; }
         public virtual ICollection<OrderDetail> OrderDetails { get; set; }
