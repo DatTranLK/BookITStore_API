@@ -25,6 +25,7 @@ namespace Entity.Models
         public virtual DbSet<Category> Categories { get; set; }
         public virtual DbSet<ComboBook> ComboBooks { get; set; }
         public virtual DbSet<DetailComboBook> DetailComboBooks { get; set; }
+        public virtual DbSet<Ebook> Ebooks { get; set; }
         public virtual DbSet<Order> Orders { get; set; }
         public virtual DbSet<OrderDetail> OrderDetails { get; set; }
         public virtual DbSet<Publisher> Publishers { get; set; }
@@ -81,10 +82,6 @@ namespace Entity.Models
                     .HasColumnName("ISBN");
 
                 entity.Property(e => e.Name).HasMaxLength(200);
-
-                entity.Property(e => e.Pdfurl)
-                    .HasColumnType("ntext")
-                    .HasColumnName("PDFUrl");
 
                 entity.Property(e => e.Price).HasColumnType("money");
 
@@ -156,6 +153,27 @@ namespace Entity.Models
                     .HasConstraintName("FK_DetailComboBook_ComboBook");
             });
 
+            modelBuilder.Entity<Ebook>(entity =>
+            {
+                entity.HasKey(e => e.BookId);
+
+                entity.ToTable("Ebook");
+
+                entity.Property(e => e.BookId).ValueGeneratedNever();
+
+                entity.Property(e => e.EbookId).ValueGeneratedOnAdd();
+
+                entity.Property(e => e.PdfUrl)
+                    .IsRequired()
+                    .HasColumnType("ntext");
+
+                entity.HasOne(d => d.Book)
+                    .WithOne(p => p.Ebook)
+                    .HasForeignKey<Ebook>(d => d.BookId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Ebook_Book");
+            });
+
             modelBuilder.Entity<Order>(entity =>
             {
                 entity.ToTable("Order");
@@ -183,6 +201,8 @@ namespace Entity.Models
             {
                 entity.ToTable("OrderDetail");
 
+                entity.Property(e => e.EbookId).HasColumnName("EBookId");
+
                 entity.HasOne(d => d.Book)
                     .WithMany(p => p.OrderDetails)
                     .HasForeignKey(d => d.BookId)
@@ -192,6 +212,11 @@ namespace Entity.Models
                     .WithMany(p => p.OrderDetails)
                     .HasForeignKey(d => d.ComboBookId)
                     .HasConstraintName("FK_OrderDetail_ComboBook");
+
+                entity.HasOne(d => d.Ebook)
+                    .WithMany(p => p.OrderDetails)
+                    .HasForeignKey(d => d.EbookId)
+                    .HasConstraintName("FK_OrderDetail_Ebook");
 
                 entity.HasOne(d => d.Order)
                     .WithMany(p => p.OrderDetails)
