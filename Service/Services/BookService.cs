@@ -80,6 +80,34 @@ namespace Service.Services
             }
         }
 
+        public async Task<ServiceResponse<int>> CreateNewPhysicalBookAndEBook(BookDtoForPhysicalAndEBook bookDtoForPhysicalAndEBook)
+        {
+            try
+            {
+                //Validation in here
+                //Starting insert into Db
+                var _mapper = config.CreateMapper();
+                var bookAndEbook = _mapper.Map<Book>(bookDtoForPhysicalAndEBook);
+                bookAndEbook.IsActive = true;
+                bookAndEbook.SetBookId = null;
+                bookAndEbook.IsSetBook = false;
+                bookAndEbook.Ebook.HasPhysicalBook = true;
+                await _bookRepository.Insert(bookAndEbook);
+                return new ServiceResponse<int>
+                {
+                    Data = bookAndEbook.Id,
+                    Message = "Successfully",
+                    Success = true,
+                    StatusCode = 201
+                };
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception(ex.Message);
+            }
+        }
+
         public async Task<ServiceResponse<string>> DisableOrEnableBook(int id)
         {
             try

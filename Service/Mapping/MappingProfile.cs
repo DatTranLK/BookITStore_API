@@ -38,6 +38,11 @@ namespace Service.Mapping
                 .ForMember(dto => dto.IsSetBook, act => act.MapFrom(obj => obj.Book.IsSetBook))
                 .ReverseMap();
             CreateMap<Ebook, EBookDtoForUpdate>().ReverseMap();
+            CreateMap<Book, BookDtoForPhysicalAndEBook>()
+                .ForMember(dto => dto.EBookPrice, act => act.MapFrom(obj => obj.Ebook.Price))
+                .ForMember(dto => dto.PdfUrl, act => act.MapFrom(obj => obj.Ebook.PdfUrl))
+                .ForMember(dto => dto.HasPhysicalBook, act => act.MapFrom(obj => obj.Ebook.HasPhysicalBook))
+                .ReverseMap();
         }
     }
 }
