@@ -127,5 +127,22 @@ namespace Bookstore_API_JFF.Controllers
                 return StatusCode(500, "Internal server error: " + ex.Message);
             }
         }
+        [HttpPost("book-ebook", Name = "CreateNewPhysicalBookAndEBook")]
+        [Produces("application/json")]
+        [ProducesResponseType((int)HttpStatusCode.Created)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        public async Task<ActionResult<ServiceResponse<int>>> CreateNewPhysicalBookAndEBook([FromBody] BookDtoForPhysicalAndEBook bookDtoForPhysicalAndEBook)
+        {
+            try
+            {
+                var res = await _bookService.CreateNewPhysicalBookAndEBook(bookDtoForPhysicalAndEBook);
+                return StatusCode((int)res.StatusCode, res);
+            }
+            catch (Exception ex)
+            {
+
+                return StatusCode(500, "Internal server error: " + ex.Message);
+            }
+        }
     }
 }

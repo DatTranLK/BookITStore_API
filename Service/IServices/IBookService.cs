@@ -16,5 +16,6 @@ namespace Service.IServices
         Task<ServiceResponse<string>> DisableOrEnableBook(int id);
         Task<ServiceResponse<int>> CreateNewPhysicalBook(Book book);
         Task<ServiceResponse<Book>> UpdatePhysicalBook(int id, Book book);
+        Task<ServiceResponse<int>> CreateNewPhysicalBookAndEBook(BookDtoForPhysicalAndEBook bookDtoForPhysicalAndEBook);
     }
 }
