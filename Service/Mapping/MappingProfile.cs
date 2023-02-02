@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Entity.Dtos.BookImage;
 using Entity.Dtos.Category;
 using Entity.Dtos.OrderDetail;
 using Entity.Models;
@@ -18,6 +19,8 @@ namespace Service.Mapping
             CreateMap<OrderDetail, OrderDetailDto>()
                 .ForMember(dto => dto.BookName, act => act.MapFrom(obj => obj.Book.Name))
                 .ForMember(dto => dto.ComboBookName, act => act.MapFrom(obj => obj.ComboBook.Name));
+            CreateMap<BookImage, BookImageDto>().
+                ForMember(dto => dto.BookName, act => act.MapFrom(obj => obj.Book.Name));
         }
     }
 }
