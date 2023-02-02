@@ -58,12 +58,16 @@ namespace Bookstore_API_JFF
             services.AddScoped<IAuthenticationRepository, AuthenticationRepository>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<IOrderDetailRepository, OrderDetailRepository>();
+            services.AddScoped<IAccountRepository, AccountRepository>();
+            services.AddScoped<IPublisherRepository, PublisherRepository>();
 
             //For DI Service
             services.AddScoped<IAuthenticationService, AuthenticationService>();
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<IOrderDetailService, OrderDetailService>();
-            
+            services.AddScoped<IAccountService, AccountService>();
+            services.AddScoped<IPublisherService, PublisherService>();
+
             //For Json Cycle
             services.AddControllersWithViews().AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
             //register cors

@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
+using Entity.Dtos.Account;
 using Entity.Dtos.Category;
 using Entity.Dtos.OrderDetail;
+using Entity.Dtos.Publisher;
 using Entity.Models;
 using System;
 using System.Collections.Generic;
@@ -15,6 +17,8 @@ namespace Service.Mapping
         public MappingProfile()
         {
             CreateMap<Category, CategoryDto>().ReverseMap();
+            CreateMap<Account, AccountDto>().ReverseMap();
+            CreateMap<Publisher, PublisherDto>().ReverseMap();
             CreateMap<OrderDetail, OrderDetailDto>()
                 .ForMember(dto => dto.BookName, act => act.MapFrom(obj => obj.Book.Name))
                 .ForMember(dto => dto.ComboBookName, act => act.MapFrom(obj => obj.ComboBook.Name));
