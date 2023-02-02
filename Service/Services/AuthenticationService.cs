@@ -30,6 +30,15 @@ namespace Service.Services
             try
             {
                 var acc = await _authenticationRepository.Authentication(idToken);
+                if (acc.IsActive == false)
+                {
+                    return new ServiceResponse<string>
+                    {
+                        Message = "Your account has banned!!!",
+                        Success = true,
+                        StatusCode = 200
+                    };
+                }
                 return new ServiceResponse<string>
                 {
                     Data = CreateToken(acc),
