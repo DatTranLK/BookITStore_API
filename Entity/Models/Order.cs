@@ -18,10 +18,8 @@ namespace Entity.Models
         public string ShippingAddress { get; set; }
         public string OrderStatus { get; set; }
         public int? CustomerId { get; set; }
-        public int? StaffId { get; set; }
 
         public virtual Account Customer { get; set; }
-        public virtual Account Staff { get; set; }
         public virtual ICollection<OrderDetail> OrderDetails { get; set; }
     }
 }

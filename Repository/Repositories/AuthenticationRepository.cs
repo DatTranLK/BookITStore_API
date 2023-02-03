@@ -41,7 +41,6 @@ namespace Repository.Repositories
             {
                 Account account = new Account();
                 account.Email = auth.Result.Email;
-                account.Password = null;
                 account.Name = auth.Result.DisplayName;
                 account.ImgPath = auth.Result.PhotoUrl;
                 account.Phone = auth.Result.PhoneNumber;

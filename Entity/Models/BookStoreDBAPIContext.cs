@@ -34,8 +34,9 @@ namespace Entity.Models
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
+
             var builder = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+                            .SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
             IConfigurationRoot configuration = builder.Build();
             optionsBuilder.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
         }
@@ -55,8 +56,6 @@ namespace Entity.Models
                 entity.Property(e => e.ImgPath).HasColumnType("ntext");
 
                 entity.Property(e => e.Name).HasMaxLength(150);
-
-                entity.Property(e => e.Password).HasMaxLength(150);
 
                 entity.Property(e => e.Phone)
                     .HasMaxLength(10)
@@ -187,14 +186,9 @@ namespace Entity.Models
                 entity.Property(e => e.TotalPrice).HasColumnType("money");
 
                 entity.HasOne(d => d.Customer)
-                    .WithMany(p => p.OrderCustomers)
+                    .WithMany(p => p.Orders)
                     .HasForeignKey(d => d.CustomerId)
                     .HasConstraintName("FK_Order_Account");
-
-                entity.HasOne(d => d.Staff)
-                    .WithMany(p => p.OrderStaffs)
-                    .HasForeignKey(d => d.StaffId)
-                    .HasConstraintName("FK_Order_Account1");
             });
 
             modelBuilder.Entity<OrderDetail>(entity =>
@@ -244,10 +238,7 @@ namespace Entity.Models
 
                 entity.Property(e => e.SetBookId).ValueGeneratedNever();
 
-                entity.HasOne(d => d.Book)
-                    .WithMany(p => p.SetBooks)
-                    .HasForeignKey(d => d.BookId)
-                    .HasConstraintName("FK_SetBook_Book");
+                entity.Property(e => e.Name).HasMaxLength(250);
             });
 
             OnModelCreatingPartial(modelBuilder);
