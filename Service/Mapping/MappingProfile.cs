@@ -4,6 +4,7 @@ using Entity.Dtos.BookImage;
 using Entity.Dtos.Book;
 using Entity.Dtos.Category;
 using Entity.Dtos.EBook;
+using Entity.Dtos.Order;
 using Entity.Dtos.OrderDetail;
 using Entity.Dtos.Publisher;
 using Entity.Models;
@@ -50,6 +51,10 @@ namespace Service.Mapping
                 .ForMember(dto => dto.PdfUrl, act => act.MapFrom(obj => obj.Ebook.PdfUrl))
                 .ForMember(dto => dto.HasPhysicalBook, act => act.MapFrom(obj => obj.Ebook.HasPhysicalBook))
                 .ReverseMap();
+            CreateMap<Order, OrderDtoForAdmin>()
+                .ForMember(dto => dto.CustomerName, act => act.MapFrom(obj => obj.Customer.Name))
+                .ReverseMap();
+            CreateMap<Order, OrderDtoForCus>().ReverseMap();
         }
     }
 }
