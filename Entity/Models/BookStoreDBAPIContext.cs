@@ -34,7 +34,6 @@ namespace Entity.Models
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-
             var builder = new ConfigurationBuilder()
                             .SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
             IConfigurationRoot configuration = builder.Build();
@@ -180,6 +179,8 @@ namespace Entity.Models
                 entity.Property(e => e.CreateDate).HasColumnType("datetime");
 
                 entity.Property(e => e.OrderStatus).HasMaxLength(50);
+
+                entity.Property(e => e.PaymentMethod).HasMaxLength(150);
 
                 entity.Property(e => e.ShippingAddress).HasColumnType("ntext");
 

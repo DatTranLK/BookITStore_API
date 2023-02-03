@@ -9,6 +9,7 @@ namespace Entity.Enum
     public enum OrderStatus
     {
         In_Progress,
+        Accepted,
         Paid,
         Physical_book_delivered,
         Ebook_delivered,
