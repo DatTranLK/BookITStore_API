@@ -13,7 +13,6 @@ namespace Entity.Models
             BookImages = new HashSet<BookImage>();
             DetailComboBooks = new HashSet<DetailComboBook>();
             OrderDetails = new HashSet<OrderDetail>();
-            SetBooks = new HashSet<SetBook>();
         }
 
         public int Id { get; set; }
@@ -25,14 +24,12 @@ namespace Entity.Models
         public decimal? Price { get; set; }
         public string Description { get; set; }
         public int? Amount { get; set; }
-        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public int? AmountSold { get; set; }
         public bool? IsActive { get; set; }
         public int? CategoryId { get; set; }
         public int? PublisherId { get; set; }
         public int? SetBookId { get; set; }
         public bool? IsSetBook { get; set; }
-
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public virtual Category Category { get; set; }
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -47,7 +44,5 @@ namespace Entity.Models
         public virtual ICollection<DetailComboBook> DetailComboBooks { get; set; }
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public virtual ICollection<OrderDetail> OrderDetails { get; set; }
-        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public virtual ICollection<SetBook> SetBooks { get; set; }
     }
 }

@@ -60,6 +60,7 @@ namespace Bookstore_API_JFF
             services.AddScoped<IOrderDetailRepository, OrderDetailRepository>();
             services.AddScoped<IBookRepository, BookRepository>();
             services.AddScoped<IEBookRepository, EBookRepository>();
+            services.AddScoped<IOrderRepository, OrderRepository>();
 
             //For DI Service
             services.AddScoped<IAuthenticationService, AuthenticationService>();
@@ -67,6 +68,7 @@ namespace Bookstore_API_JFF
             services.AddScoped<IOrderDetailService, OrderDetailService>();
             services.AddScoped<IBookService, BookService>();
             services.AddScoped<IEBookService, EBookService>();
+            services.AddScoped<IOrderService, OrderService>();
             
             //For Json Cycle
             services.AddControllersWithViews().AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);

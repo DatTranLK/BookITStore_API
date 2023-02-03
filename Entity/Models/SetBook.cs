@@ -13,10 +13,9 @@ namespace Entity.Models
         }
 
         public int SetBookId { get; set; }
-        public int? BookId { get; set; }
+        public string Name { get; set; }
         public int? Indexes { get; set; }
 
-        public virtual Book Book { get; set; }
         public virtual ICollection<Book> Books { get; set; }
     }
 }
