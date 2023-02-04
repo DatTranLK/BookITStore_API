@@ -64,6 +64,9 @@ namespace Bookstore_API_JFF
             services.AddScoped<IBookRepository, BookRepository>();
             services.AddScoped<IEBookRepository, EBookRepository>();
             services.AddScoped<IOrderRepository, OrderRepository>();
+            services.AddScoped<IComboBookRepository, ComboBookRepository>();
+            services.AddScoped<IDetailComboBookRepository, DetailComboBookRepository>();
+
 
             //For DI Service
             services.AddScoped<IAuthenticationService, AuthenticationService>();
@@ -75,7 +78,9 @@ namespace Bookstore_API_JFF
             services.AddScoped<IBookService, BookService>();
             services.AddScoped<IEBookService, EBookService>();
             services.AddScoped<IOrderService, OrderService>();
-            
+            services.AddScoped<IComboBookService, ComboBookService>();
+            services.AddScoped<IDetailComboBookService, DetailComboBookService>();
+
             //For Json Cycle
             services.AddControllersWithViews().AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
             //register cors
