@@ -20,5 +20,11 @@ namespace Service.IServices
         Task<ServiceResponse<OrderDtoForCus>> GetOrderByIdForCus(int orderId);
 
         Task<ServiceResponse<int>> CreateNewOrder(Order order);
+
+        //Change order status
+        Task<ServiceResponse<string>> ChangeOrderStatusToAcceptedWithOCDMethod(int orderId);
+        Task<ServiceResponse<string>> ChangeOrderStatusToPaidWithOCDMethod(int orderId);
+        Task<ServiceResponse<string>> ChangeOrderStatusToCancel(int orderId);
+        Task<ServiceResponse<string>> ChangeOrderStatusToDone(int orderId);
     }
 }

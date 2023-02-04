@@ -110,6 +110,7 @@ namespace Service.Services
                 eBook.Book.IsActive = true;
                 eBook.Book.SetBookId = null;
                 eBook.Book.IsSetBook = false;
+                eBook.Book.AmountSold = 0;
                 await _eBookRepository.Insert(eBook);
                 return new ServiceResponse<int>
                 {

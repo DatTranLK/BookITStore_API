@@ -64,6 +64,7 @@ namespace Service.Services
                 book.IsActive = true;
                 book.SetBookId = null;
                 book.IsSetBook = false;
+                book.AmountSold = 0;
                 await _bookRepository.Insert(book);
                 return new ServiceResponse<int>
                 {
@@ -91,6 +92,7 @@ namespace Service.Services
                 bookAndEbook.IsActive = true;
                 bookAndEbook.SetBookId = null;
                 bookAndEbook.IsSetBook = false;
+                bookAndEbook.AmountSold = 0;
                 bookAndEbook.Ebook.HasPhysicalBook = true;
                 await _bookRepository.Insert(bookAndEbook);
                 return new ServiceResponse<int>

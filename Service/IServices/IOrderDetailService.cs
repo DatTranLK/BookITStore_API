@@ -12,7 +12,7 @@ namespace Service.IServices
     {
         Task<ServiceResponse<IEnumerable<OrderDetailDto>>> GetOrderDetailsById(int orderId);
         Task<ServiceResponse<int>> CountAll(int orderId);
-        Task<ServiceResponse<int>> CreateOrderDetail(OrderDetail orderDetail);
+        Task<ServiceResponse<int>> CreateOrderDetailWithPhysicalBook(OrderDetail orderDetail);
         Task<ServiceResponse<OrderDetail>> UpdateOrderDetail(int id, OrderDetail orderDetail);
     }
 }
