@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Entity.Dtos.ComboBookDTO;
 
 namespace Service.Mapping
 {
@@ -56,6 +57,12 @@ namespace Service.Mapping
                 .ForMember(dto => dto.CustomerName, act => act.MapFrom(obj => obj.Customer.Name))
                 .ReverseMap();
             CreateMap<Order, OrderDtoForCus>().ReverseMap();
+
+            //Map ComboBook
+            CreateMap<ComboBook, ComboBookDTO>().ReverseMap();
+
+            //Map Detail ComboBook
+            CreateMap<DetailComboBook, ComboBookDTO>().ReverseMap();
         }
     }
 }
