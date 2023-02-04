@@ -16,14 +16,20 @@ namespace Service.Services
     public class OrderDetailService : IOrderDetailService
     {
         private readonly IOrderDetailRepository _orderDetailRepository;
+        private readonly IEBookRepository _eBookRepository;
+        private readonly IOrderRepository _orderRepository;
+        private readonly IBookRepository _bookRepository;
         MapperConfiguration config = new MapperConfiguration(cfg =>
         {
             cfg.AddProfile(new MappingProfile());
         });
 
-        public OrderDetailService(IOrderDetailRepository orderDetailRepository)
+        public OrderDetailService(IOrderDetailRepository orderDetailRepository, IEBookRepository eBookRepository, IOrderRepository orderRepository, IBookRepository bookRepository)
         {
             _orderDetailRepository = orderDetailRepository;
+            _eBookRepository = eBookRepository;
+            _orderRepository = orderRepository;
+            _bookRepository = bookRepository;
         }
         public async Task<ServiceResponse<int>> CountAll(int orderId)
         {
@@ -55,12 +61,54 @@ namespace Service.Services
             }
         }
 
-        public async Task<ServiceResponse<int>> CreateOrderDetail(OrderDetail orderDetail)
+        public async Task<ServiceResponse<int>> CreateOrderDetailWithPhysicalBook(OrderDetail orderDetail)
         {
             try
             {
-                //Validation in here
-                //Starting insert to Db
+                var checkOrderExist = await _orderRepository.GetById(orderDetail.OrderId);
+                if (checkOrderExist == null)
+                {
+                    return new ServiceResponse<int>
+                    {
+                        Message = "Not found order",
+                        Success = true,
+                        StatusCode = 200
+                    };
+                }
+                if (orderDetail.BookId != null)
+                {
+                    var checkBookExist = await _bookRepository.GetById(orderDetail.BookId);
+                    if (checkBookExist == null)
+                    {
+                        return new ServiceResponse<int>
+                        {
+                            Message = "Not found book",
+                            Success = true,
+                            StatusCode = 200
+                        };
+                    }
+                    orderDetail.EbookId = null;
+                    orderDetail.ComboBookId = null;
+                }
+                else if (orderDetail.EbookId != null)
+                {
+                    var checkEBookExist = await _eBookRepository.GetByWithCondition(x => x.EbookId == orderDetail.EbookId, null, true);
+                    if (checkEBookExist == null)
+                    {
+                        return new ServiceResponse<int>
+                        {
+                            Message = "Not found ebook",
+                            Success = true,
+                            StatusCode = 200
+                        };
+                    }
+                    orderDetail.BookId = null;
+                    orderDetail.ComboBookId = null;
+                }
+                else if (orderDetail.ComboBookId != null)
+                { 
+                
+                }
                 await _orderDetailRepository.Insert(orderDetail);
                 return new ServiceResponse<int>
                 {
@@ -85,7 +133,9 @@ namespace Service.Services
                 { 
                     x => x.Order,
                     x => x.Book,
-                    x => x.ComboBook
+                    x => x.ComboBook,
+                    x => x.Ebook,
+                    x => x.Ebook.Book
                 };
                 var orderDetails = await _orderDetailRepository.GetAllWithCondition(x => x.OrderId == orderId, includes, null, true);
                 var _mapper = config.CreateMapper();

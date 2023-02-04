@@ -141,5 +141,73 @@ namespace Bookstore_API_JFF.Controllers
                 return StatusCode(500, "Internal server error: " + ex.Message);
             }
         }
+        [HttpPut("order/order-status/accepted", Name = "ChangeOrderStatusToAcceptedWithOCDMethod")]
+        [Produces("application/json")]
+        [ProducesResponseType((int)HttpStatusCode.NoContent)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        public async Task<ActionResult<ServiceResponse<string>>> ChangeOrderStatusToAcceptedWithOCDMethod(int orderId)
+        {
+            try
+            {
+                var res = await _orderService.ChangeOrderStatusToAcceptedWithOCDMethod(orderId);
+                return StatusCode((int)res.StatusCode, res);
+            }
+            catch (Exception ex)
+            {
+
+                return StatusCode(500, "Internal server error: " + ex.Message);
+            }
+        }
+        [HttpPut("order/order-status/cancel", Name = "ChangeOrderStatusToCancel")]
+        [Produces("application/json")]
+        [ProducesResponseType((int)HttpStatusCode.NoContent)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        public async Task<ActionResult<ServiceResponse<string>>> ChangeOrderStatusToCancel(int orderId)
+        {
+            try
+            {
+                var res = await _orderService.ChangeOrderStatusToCancel(orderId);
+                return StatusCode((int)res.StatusCode, res);
+            }
+            catch (Exception ex)
+            {
+
+                return StatusCode(500, "Internal server error: " + ex.Message);
+            }
+        }
+        [HttpPut("order/order-status/paid", Name = "ChangeOrderStatusToPaid")]
+        [Produces("application/json")]
+        [ProducesResponseType((int)HttpStatusCode.NoContent)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        public async Task<ActionResult<ServiceResponse<string>>> ChangeOrderStatusToPaid(int orderId)
+        {
+            try
+            {
+                var res = await _orderService.ChangeOrderStatusToPaidWithOCDMethod(orderId);
+                return StatusCode((int)res.StatusCode, res);
+            }
+            catch (Exception ex)
+            {
+
+                return StatusCode(500, "Internal server error: " + ex.Message);
+            }
+        }
+        [HttpPut("order/order-status/done", Name = "ChangeOrderStatusToDone")]
+        [Produces("application/json")]
+        [ProducesResponseType((int)HttpStatusCode.NoContent)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        public async Task<ActionResult<ServiceResponse<string>>> ChangeOrderStatusToDone(int orderId)
+        {
+            try
+            {
+                var res = await _orderService.ChangeOrderStatusToDone(orderId);
+                return StatusCode((int)res.StatusCode, res);
+            }
+            catch (Exception ex)
+            {
+
+                return StatusCode(500, "Internal server error: " + ex.Message);
+            }
+        }
     }
 }

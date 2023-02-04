@@ -63,7 +63,7 @@ namespace Bookstore_API_JFF.Controllers
         {
             try
             {
-                var res = await _orderDetailService.CreateOrderDetail(orderDetail);
+                var res = await _orderDetailService.CreateOrderDetailWithPhysicalBook(orderDetail);
                 return StatusCode((int)res.StatusCode, res);
             }
             catch (Exception ex)
