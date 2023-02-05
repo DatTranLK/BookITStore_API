@@ -11,10 +11,11 @@ using Entity.Models;
 using Entity.Dtos.DetailComboBookDTO;
 using Entity.Dtos.Category;
 using System.Collections.Generic;
+using Entity.Dtos.Book;
 
 namespace Bookstore_API_JFF.Controllers
 {
-    [Route("api/detail-combo-book")]
+    [Route("api/detail-combo-books")]
     [ApiController]
     public class DetailComboBookController : ControllerBase
     {
@@ -41,31 +42,11 @@ namespace Bookstore_API_JFF.Controllers
         }
         [HttpPost("detail-combo-book", Name = "CreateDetailNewComboBook")]
         [Produces("application/json")]
-        [ProducesResponseType((int)HttpStatusCode.Created)]
-        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<ActionResult<ServiceResponse<DetailComboBook>>> CreateDetailNewComboBook([FromBody] CreateNewComboDetailRequest createNewComboDetail)
         {
             try
             {
                 var res = await _detailComboBookService.CreateNewDetailComboBook(createNewComboDetail.comboId, createNewComboDetail.bookId);
-                return CreatedAtRoute("GetDetailComboBookById", new { id = res });
-            }
-            catch (Exception ex)
-            {
-
-                return StatusCode(500, "Internal server error: " + ex.Message);
-            }
-        }
-
-        [HttpGet("detail-combo-book/{id}", Name = "GetDetailComboBookById")]
-        [Produces("application/json")]
-        [ProducesResponseType((int)HttpStatusCode.OK)]
-        [ProducesResponseType((int)HttpStatusCode.NotFound)]
-        public async Task<ActionResult<ServiceResponse<CategoryDto>>> GetDetailComboBookById(int id)
-        {
-            try
-            {
-                var res = await _detailComboBookService.GetDetailComboBookyById(id);
                 return StatusCode((int)res.StatusCode, res);
             }
             catch (Exception ex)
@@ -76,11 +57,11 @@ namespace Bookstore_API_JFF.Controllers
         }
 
 
-        [HttpGet("list-detail-combo-book/combo/{id}", Name = "GetDetailComboBooksOfCombo")]
+        [HttpGet("books-of-combo/{comboId}", Name = "GetDetailComboBooksOfCombo")]
         [Produces("application/json")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
-        public async Task<ActionResult<ServiceResponse<IEnumerable<CategoryDto>>>> GetDetailComboBooksOfCombo(int id)
+        public async Task<ActionResult<ServiceResponse<IEnumerable<ListBookOfCombo>>>> GetDetailComboBooksOfCombo(int comboId)
         {
             try
             {

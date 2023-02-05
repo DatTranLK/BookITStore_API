@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Bookstore_API_JFF.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/login")]
     [ApiController]
     public class LoginController : ControllerBase
     {

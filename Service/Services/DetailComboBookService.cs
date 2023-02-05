@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Entity.Dtos.Book;
 using Entity.Dtos.ComboBookDTO;
 using Entity.Dtos.DetailComboBookDTO;
 using Entity.Models;
@@ -9,6 +10,7 @@ using Service.Mapping;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,14 +20,16 @@ namespace Service.Services
 {
     public class DetailComboBookService : IDetailComboBookService
     {
+        private readonly IComboBookRepository comboBookRepository;
         private readonly IDetailComboBookRepository detailComboBookRepository;
         private readonly IBookRepository _bookRepository;
         MapperConfiguration configuration = new MapperConfiguration(cfg =>
         {
             cfg.AddProfile(new MappingProfile());
         });
-        public DetailComboBookService(IDetailComboBookRepository detailComboBookRepository, IBookRepository bookRepository)
+        public DetailComboBookService(IDetailComboBookRepository detailComboBookRepository, IBookRepository bookRepository, IComboBookRepository comboBookRepository)
         {
+            this.comboBookRepository = comboBookRepository;
             this.detailComboBookRepository = detailComboBookRepository;
             _bookRepository = bookRepository;
         }
@@ -35,15 +39,47 @@ namespace Service.Services
             try
             {
                 //Validation in here
+               
+
+                //Check data exsitst 
+                ComboBook comboBook = await comboBookRepository.GetById(comboBookId);
+                if (comboBook == null)
+                {
+                    return new ServiceResponse<int>
+                    {
+                        Message = "No data has found",
+                        Success = true,
+                        StatusCode = 404
+                    };
+                }
+
+
+                HashSet<int> uniqueItems = new HashSet<int>();
                 //Starting insert to Db
                 foreach (int bookIdItem in bookId)
                 {
+                    //Check data unique (chua check book da ton tai trong DB)
+                    if (!uniqueItems.Contains(bookIdItem))
+                    {
+                        uniqueItems.Add(bookIdItem);
+                    }
+                    else
+                    {
+                        return new ServiceResponse<int>
+                        {
+                            Message = "Book has to be unique",
+                            Success = true,
+                            StatusCode = 400
+                        };
+                    }
+
+                    //Check data exsitst 
                     var checkExist = await _bookRepository.GetById(bookIdItem);
                     if (checkExist == null)
                     {
                         return new ServiceResponse<int>
                         {
-                            Message = "No book has found",
+                            Message = "No data has found",
                             Success = true,
                             StatusCode = 404
                         };
@@ -53,8 +89,10 @@ namespace Service.Services
                     detailComboBook.BookId = bookIdItem;
                     await detailComboBookRepository.Insert(detailComboBook);
                 }
+
                 return new ServiceResponse<int>
                 {
+                    Data = comboBookId,
                     Message = "Successfully",
                     StatusCode = 201,
                     Success = true
@@ -67,52 +105,30 @@ namespace Service.Services
             }
         }
 
-        public async Task<ServiceResponse<DetailComboBookDTO>> GetDetailComboBookyById(int id)
-        {
-            try
-            {
-                var combo = await detailComboBookRepository.GetById(id);
-                var mapper = configuration.CreateMapper();
-                var comboDTO = mapper.Map<DetailComboBookDTO>(combo);
-                if (combo == null)
-                {
-                    return new ServiceResponse<DetailComboBookDTO>
-                    {
-                        Message = "No data has found",
-                        Success = true,
-                        StatusCode = 200
-                    };
-                }
-                return new ServiceResponse<DetailComboBookDTO>
-                {
-                    Data = comboDTO,
-                    Message = "Successfully",
-                    Success = true,
-                    StatusCode = 200
-                };
-            }
-            catch (Exception ex)
-            {
 
-                throw new Exception(ex.Message);
-            }
-        }
-
-        public async Task<ServiceResponse<IEnumerable<DetailComboBookDTO>>> GetListInDetailOfComboBookId(int id)
+        //lay 1 list sach thuoc combo do 
+        public async Task<ServiceResponse<IEnumerable<ListBookOfCombo>>> GetListInDetailOfComboBookId(int id)
         {
-            var list = detailComboBookRepository.GetByCondition(x => x.ComboBookId == id);
+            List<Expression<Func<DetailComboBook, object>>> includes = new List<Expression<Func<DetailComboBook, object>>>
+            { 
+                x => x.Book,
+                x => x.Book.Category,
+                x => x.Book.Publisher,
+                x => x.ComboBook
+            };
+            var list = await detailComboBookRepository.GetAllWithCondition(x => x.ComboBookId == id, includes, null, true);
             var mapper = configuration.CreateMapper();
-            var convertedList = mapper.Map< IEnumerable < DetailComboBookDTO >> (list);
+            var convertedList = mapper.Map< IEnumerable <ListBookOfCombo>> (list);
             if (convertedList == null)
             {
-                return new ServiceResponse<IEnumerable<DetailComboBookDTO>>
+                return new ServiceResponse<IEnumerable<ListBookOfCombo>>
                 {
                     Message = "No combo detail has found",
                     Success = true,
                     StatusCode = 200
                 };
             }
-            return new ServiceResponse<IEnumerable<DetailComboBookDTO>>
+            return new ServiceResponse<IEnumerable<ListBookOfCombo>>
             {
                 Data = convertedList,
                 Message = "Successfully",
