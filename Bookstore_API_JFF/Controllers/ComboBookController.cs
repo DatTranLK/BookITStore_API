@@ -115,12 +115,12 @@ namespace Bookstore_API_JFF.Controllers
         [Produces("application/json")]
         [ProducesResponseType((int)HttpStatusCode.Created)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public async Task<ActionResult<ServiceResponse<ComboBook>>> CreateNewComboBook([FromBody] CreateComboRequest createComboRequest)
+        public async Task<ActionResult<ServiceResponse<int>>> CreateNewComboBook([FromBody] CreateComboRequest createComboRequest)
         {
             try
             {
                 var res = await comboBookService.CreateNewComboBook(createComboRequest.comboBook, createComboRequest.bookId);
-                return CreatedAtRoute("GetComboBookById", new { id = createComboRequest.comboBook.Id }, createComboRequest.comboBook);
+                return StatusCode((int)res.StatusCode, res);
             }
             catch (Exception ex)
             {

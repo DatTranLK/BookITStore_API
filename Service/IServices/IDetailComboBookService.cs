@@ -1,4 +1,5 @@
-﻿using Entity.Dtos.ComboBookDTO;
+﻿using Entity.Dtos.Book;
+using Entity.Dtos.ComboBookDTO;
 using Entity.Dtos.DetailComboBookDTO;
 using Entity.Models;
 using System;
@@ -11,8 +12,7 @@ namespace Service.IServices
 {
     public interface IDetailComboBookService
     {
-        Task<ServiceResponse<DetailComboBookDTO>> GetDetailComboBookyById(int id);
-        Task<ServiceResponse<IEnumerable<DetailComboBookDTO>>> GetListInDetailOfComboBookId(int id);
+        Task<ServiceResponse<IEnumerable<ListBookOfCombo>>> GetListInDetailOfComboBookId(int id);
         //Them moi combodetail khi da co san comboid 
         Task<ServiceResponse<int>> CreateNewDetailComboBook(int comboBookId, List<int> bookId);
         

@@ -54,13 +54,25 @@ namespace Service.Services
         {
             try
             {
-                //Validation in here
-                //Starting insert to Db
-                comboBoo.IsActive = true;
-                await comboBookRepository.Insert(comboBoo);
-
+                //Validation in DetailComboBook here
+                HashSet<int> uniqueItems = new HashSet<int>();
                 foreach (int bookIdItem in bookId)
                 {
+                    //Check unique item 
+                    if (!uniqueItems.Contains(bookIdItem))
+                    {
+                        uniqueItems.Add(bookIdItem);
+                    }
+                    else
+                    {
+                        return new ServiceResponse<int>
+                        {
+                            Message = "Book has to be unique",
+                            Success = true,
+                            StatusCode = 400
+                        };
+                    }
+                    //Check exist item
                     var checkExist = await _bookRepository.GetById(bookIdItem);
                     if (checkExist == null)
                     {
@@ -71,11 +83,21 @@ namespace Service.Services
                             StatusCode = 404
                         };
                     }
+                }
+                //Starting insert to Db
+                //Create ComboBook
+                comboBoo.IsActive = true;
+                await comboBookRepository.Insert(comboBoo);
+
+                //Create Detail Combobook
+                foreach (int bookIdItem in bookId)
+                {
                     DetailComboBook detailComboBook = new DetailComboBook();
                     detailComboBook.ComboBookId = comboBoo.Id;
                     detailComboBook.BookId = bookIdItem;
                     await detailComboBookRepository.Insert(detailComboBook);
                 }
+
                 return new ServiceResponse<int>
                 {
                     Data = comboBoo.Id,
@@ -144,7 +166,7 @@ namespace Service.Services
                 {
                     return new ServiceResponse<IEnumerable<ComboBookDTO>>
                     {
-                        Message = "No combo exist",
+                        Message = "Has no data exist",
                         Success = true,
                         StatusCode = 200
                     };

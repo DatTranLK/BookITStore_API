@@ -14,6 +14,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Entity.Dtos.ComboBookDTO;
+using Entity.Dtos.DetailComboBookDTO;
 
 namespace Service.Mapping
 {
@@ -62,6 +63,7 @@ namespace Service.Mapping
 
             //Map Detail ComboBook
             CreateMap<DetailComboBook, ComboBookDTO>().ReverseMap();
+            CreateMap<DetailComboBook, ListBookOfCombo>().ForMember(dto => dto.Book, act => act.MapFrom(obj => obj.Book));
         }
     }
 }
