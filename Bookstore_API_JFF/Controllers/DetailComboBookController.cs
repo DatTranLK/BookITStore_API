@@ -65,7 +65,7 @@ namespace Bookstore_API_JFF.Controllers
         {
             try
             {
-                var res = await _detailComboBookService.GetListInDetailOfComboBookId(id);
+                var res = await _detailComboBookService.GetListInDetailOfComboBookId(comboId);
                 return StatusCode((int)res.StatusCode, res);
             }
             catch (Exception ex)

@@ -16,6 +16,7 @@ namespace Service.Services
     public class OrderDetailService : IOrderDetailService
     {
         private readonly IOrderDetailRepository _orderDetailRepository;
+        private readonly IComboBookRepository _comboBookRepository;
         private readonly IEBookRepository _eBookRepository;
         private readonly IOrderRepository _orderRepository;
         private readonly IBookRepository _bookRepository;
@@ -24,9 +25,10 @@ namespace Service.Services
             cfg.AddProfile(new MappingProfile());
         });
 
-        public OrderDetailService(IOrderDetailRepository orderDetailRepository, IEBookRepository eBookRepository, IOrderRepository orderRepository, IBookRepository bookRepository)
+        public OrderDetailService(IOrderDetailRepository orderDetailRepository, IComboBookRepository comboBookRepository, IEBookRepository eBookRepository, IOrderRepository orderRepository, IBookRepository bookRepository)
         {
             _orderDetailRepository = orderDetailRepository;
+            _comboBookRepository = comboBookRepository;
             _eBookRepository = eBookRepository;
             _orderRepository = orderRepository;
             _bookRepository = bookRepository;
@@ -106,8 +108,20 @@ namespace Service.Services
                     orderDetail.ComboBookId = null;
                 }
                 else if (orderDetail.ComboBookId != null)
-                { 
-                
+                {
+                    var checkComboExist = await _comboBookRepository.GetById(orderDetail.ComboBookId);
+                    if (checkComboExist == null)
+                    {
+                        return new ServiceResponse<int>
+                        {
+                            Message = "Not found combo book",
+                            Success = true,
+                            StatusCode = 200
+                        };
+                        
+                    }
+                    orderDetail.BookId = null;
+                    orderDetail.EbookId = null;
                 }
                 await _orderDetailRepository.Insert(orderDetail);
                 return new ServiceResponse<int>
