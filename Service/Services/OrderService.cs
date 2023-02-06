@@ -21,6 +21,8 @@ namespace Service.Services
     public class OrderService : IOrderService
     {
         private readonly IOrderRepository _orderRepository;
+        private readonly IComboBookRepository _comboBookRepository;
+        private readonly IDetailComboBookRepository _detailComboBookRepository;
         private readonly IConfiguration _configuration;
         private readonly IAccountRepository _accountRepository;
         private readonly IOrderDetailRepository _orderDetailRepository;
@@ -31,9 +33,11 @@ namespace Service.Services
             cfg.AddProfile(new MappingProfile());
         });
 
-        public OrderService(IOrderRepository orderRepository, IConfiguration configuration, IAccountRepository accountRepository, IOrderDetailRepository orderDetailRepository, IBookRepository bookRepository, IEBookRepository eBookRepository)
+        public OrderService(IOrderRepository orderRepository, IComboBookRepository comboBookRepository, IDetailComboBookRepository detailComboBookRepository, IConfiguration configuration, IAccountRepository accountRepository, IOrderDetailRepository orderDetailRepository, IBookRepository bookRepository, IEBookRepository eBookRepository)
         {
             _orderRepository = orderRepository;
+            _comboBookRepository = comboBookRepository;
+            _detailComboBookRepository = detailComboBookRepository;
             _configuration = configuration;
             _accountRepository = accountRepository;
             _orderDetailRepository = orderDetailRepository;
@@ -99,7 +103,14 @@ namespace Service.Services
                             }
                             else if (item.ComboBookId != null)
                             {
-                                Console.WriteLine("Hello co combobook");
+                                var lstdetailComboBook = await _detailComboBookRepository.GetByCondition(x => x.ComboBookId == item.ComboBookId);
+                                foreach (var itemInList in lstdetailComboBook)
+                                {
+                                    var getBookByBookId = await _bookRepository.GetById(itemInList.BookId);
+                                    getBookByBookId.Amount -= item.Quantity;
+                                    getBookByBookId.AmountSold += item.Quantity;
+                                    await _bookRepository.Save();
+                                }
                             }
                         }
                     }
