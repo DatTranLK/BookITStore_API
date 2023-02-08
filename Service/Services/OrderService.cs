@@ -3,7 +3,11 @@ using Entity;
 using Entity.Dtos.Order;
 using Entity.Enum;
 using Entity.Models;
+using MailKit.Security;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
+using MimeKit;
+using MimeKit.Text;
 using Repository.IRepositories;
 using Service.IServices;
 using Service.Mapping;
@@ -21,6 +25,7 @@ namespace Service.Services
     public class OrderService : IOrderService
     {
         private readonly IOrderRepository _orderRepository;
+        private readonly IVnPayService _vnPayService;
         private readonly IComboBookRepository _comboBookRepository;
         private readonly IDetailComboBookRepository _detailComboBookRepository;
         private readonly IConfiguration _configuration;
@@ -33,9 +38,10 @@ namespace Service.Services
             cfg.AddProfile(new MappingProfile());
         });
 
-        public OrderService(IOrderRepository orderRepository, IComboBookRepository comboBookRepository, IDetailComboBookRepository detailComboBookRepository, IConfiguration configuration, IAccountRepository accountRepository, IOrderDetailRepository orderDetailRepository, IBookRepository bookRepository, IEBookRepository eBookRepository)
+        public OrderService(IOrderRepository orderRepository, IVnPayService vnPayService, IComboBookRepository comboBookRepository, IDetailComboBookRepository detailComboBookRepository, IConfiguration configuration, IAccountRepository accountRepository, IOrderDetailRepository orderDetailRepository, IBookRepository bookRepository, IEBookRepository eBookRepository)
         {
             _orderRepository = orderRepository;
+            _vnPayService = vnPayService;
             _comboBookRepository = comboBookRepository;
             _detailComboBookRepository = detailComboBookRepository;
             _configuration = configuration;
@@ -261,15 +267,39 @@ namespace Service.Services
                                 var ebook = await _eBookRepository.GetByWithCondition(x => x.EbookId == item.EbookId, null, true);
                                 list.Add(ebook.PdfUrl.ToString());
                             }
-                            
+
                         }
                         var acc = await _accountRepository.GetById(checkOrderExist.CustomerId);
-                        EmailModel request = new EmailModel();
+                        /*EmailModel request = new EmailModel();
                         request.To = acc.Email;
-                        request.Subject = "Đơn hàng thanh toán thành công";
+                        request.Subject = "Đơn hàng thanh toán thành công";*/
+
+                        var email = new MimeMessage();
+                        email.From.Add(MailboxAddress.Parse(_configuration.GetSection("EmailUserName").Value));
+                        email.To.Add(MailboxAddress.Parse(acc.Email));
+                        email.Subject = "Đơn hàng thanh toán thành công";
+                        /*email.Body = new TextPart(TextFormat.Html)
+                        {
+                            Text = "Chào bạn! Shop J4F trân trọng cảm ơn bạn vì đã mua sản phẩm pdf bên mình, và đây là link sản phẩm: "
+                        };*/
+                        string x = "Chào bạn! Shop J4F trân trọng cảm ơn bạn vì đã mua sản phẩm pdf bên mình, và đây là link sản phẩm: ";
+                        foreach (var item in list)
+                        {
+                            x += item + ", ";
+                        }
+                        email.Body = new TextPart(TextFormat.Html)
+                        {
+                            Text = x
+                        };
+
+                        using var smtp = new MailKit.Net.Smtp.SmtpClient();
+                        smtp.Connect(_configuration.GetSection("EmailHost").Value, 587, SecureSocketOptions.StartTls);
+                        smtp.Authenticate(_configuration.GetSection("EmailUserName").Value, _configuration.GetSection("EmailPassword").Value);
+                        smtp.Send(email);
+                        smtp.Disconnect(true);
 
 
-                        MailMessage message = new MailMessage();
+                        /*MailMessage message = new MailMessage();
                         message.From = new MailAddress(_configuration.GetSection("EmailUserName").Value);
                         message.Subject = request.Subject;
                         message.To.Add(new MailAddress(request.To));
@@ -279,7 +309,6 @@ namespace Service.Services
                         {
                             message.Body += item + ", ";
                         }
-                        /*message.Body = request.Body;*/
                         message.IsBodyHtml = true;
 
                         var smtpClient = new System.Net.Mail.SmtpClient("smtp.gmail.com")
@@ -288,13 +317,167 @@ namespace Service.Services
                             Credentials = new NetworkCredential(_configuration.GetSection("EmailUserName").Value, _configuration.GetSection("EmailPassword").Value),
                             EnableSsl = true
                         };
-                        smtpClient.Send(message);
+                        smtpClient.Send(message);*/
                     }
                     checkOrderExist.OrderStatus = paid.ToString();
                     await _orderDetailRepository.Save();
                 }
+                else 
+                {
+                    return new ServiceResponse<string>
+                    {
+                        Message = "Can not change status",
+                        Success = true,
+                        StatusCode = 400
+                    };
+                }
                 return new ServiceResponse<string>
                 { 
+                    Message = "Successfully",
+                    Success = true,
+                    StatusCode = 204
+                };
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<ServiceResponse<string>> CheckingPaidWithOlinePaymentMethod(int orderId)
+        {
+            try
+            {
+                OrderStatus processing = OrderStatus.In_Progress;
+                var checkOrderExist = await _orderRepository.GetById(orderId);
+                if (checkOrderExist == null)
+                {
+                    return new ServiceResponse<string>
+                    {
+                        Message = "Not found order",
+                        Success = true,
+                        StatusCode = 200
+                    };
+                }
+                if (!checkOrderExist.OrderStatus.Equals(processing.ToString()))
+                {
+                    return new ServiceResponse<string>
+                    {
+                        Message = "Can not change status",
+                        Success = true,
+                        StatusCode = 400
+                    };
+                }
+                OrderStatus paid = OrderStatus.Paid;
+                OrderStatus Ebook_delivered = OrderStatus.Ebook_delivered;
+                var lstOrderDetailByOrderId = await _orderDetailRepository.GetByCondition(x => x.OrderId == orderId);
+                if (lstOrderDetailByOrderId.Count() <= 0)
+                {
+                    return new ServiceResponse<string>
+                    {
+                        Message = "Order details have no rows",
+                        Success = true,
+                        StatusCode = 400
+                    };
+                }
+                else
+                {
+                    var list = new List<string>();
+                    foreach (var item in lstOrderDetailByOrderId)
+                    {
+                        if (item.BookId != null)
+                        {
+                            var book = await _bookRepository.GetById(item.BookId);
+                            book.Amount -= item.Quantity;
+                            book.AmountSold += item.Quantity;
+                            await _bookRepository.Save();
+                        }
+                        else if (item.EbookId != null)
+                        {
+                            var ebook = await _eBookRepository.GetByWithCondition(x => x.EbookId == item.EbookId, null, true);
+                            var book = await _bookRepository.GetById(ebook.BookId);
+                            book.AmountSold += item.Quantity;
+                            await _bookRepository.Save();
+                            list.Add(ebook.PdfUrl.ToString());
+                        }
+                        else if (item.ComboBookId != null)
+                        {
+                            var lstdetailComboBook = await _detailComboBookRepository.GetByCondition(x => x.ComboBookId == item.ComboBookId);
+                            foreach (var itemInList in lstdetailComboBook)
+                            {
+                                var getBookByBookId = await _bookRepository.GetById(itemInList.BookId);
+                                getBookByBookId.Amount -= item.Quantity;
+                                getBookByBookId.AmountSold += item.Quantity;
+                                await _bookRepository.Save();
+                            }
+                        }
+                    }
+                    if (list.Count() <= 0)
+                    {
+                        checkOrderExist.OrderStatus = paid.ToString();
+                        await _orderRepository.Save();
+                    }
+                    else 
+                    {
+                        
+
+                        var acc = await _accountRepository.GetById(checkOrderExist.CustomerId);
+                        EmailModel request = new EmailModel();
+                        request.To = acc.Email;
+                        request.Subject = "Đơn hàng thanh toán thành công";
+
+                        var email = new MimeMessage();
+                        email.From.Add(MailboxAddress.Parse(_configuration.GetSection("EmailUserName").Value));
+                        email.To.Add(MailboxAddress.Parse(acc.Email));
+                        email.Subject = "Đơn hàng thanh toán thành công";
+                        /*email.Body = new TextPart(TextFormat.Html)
+                        {
+                            Text = "Chào bạn! Shop J4F trân trọng cảm ơn bạn vì đã mua sản phẩm pdf bên mình, và đây là link sản phẩm: "
+                        };*/
+                        string x = "Chào bạn! Shop J4F trân trọng cảm ơn bạn vì đã mua sản phẩm pdf bên mình, và đây là link sản phẩm: ";
+                        foreach (var item in list)
+                        {
+                            x += item + ", ";
+                        }
+                        email.Body = new TextPart(TextFormat.Html)
+                        { 
+                            Text = x
+                        };
+
+                        using var smtp = new MailKit.Net.Smtp.SmtpClient();
+                        smtp.Connect(_configuration.GetSection("EmailHost").Value, 587, SecureSocketOptions.StartTls);
+                        smtp.Authenticate(_configuration.GetSection("EmailUserName").Value, _configuration.GetSection("EmailPassword").Value);
+                        smtp.Send(email);
+                        smtp.Disconnect(true);
+
+                        /*MailMessage message = new MailMessage();
+                        message.From = new MailAddress(_configuration.GetSection("EmailUserName").Value);
+                        message.Subject = request.Subject;
+                        message.To.Add(new MailAddress(request.To));
+
+                        message.Body = "Chào bạn! Shop J4F trân trọng cảm ơn bạn vì đã mua sản phẩm pdf bên mình, và đây là link sản phẩm: ";
+                        foreach (var item in list)
+                        {
+                            message.Body += item + ", ";
+                        }
+                        
+                        message.IsBodyHtml = true;
+
+                        var smtpClient = new System.Net.Mail.SmtpClient("smtp.gmail.com")
+                        {
+                            Port = 587,
+                            Credentials = new NetworkCredential(_configuration.GetSection("EmailUserName").Value, _configuration.GetSection("EmailPassword").Value),
+                            EnableSsl = true
+                        };
+                        smtpClient.Send(message);*/
+                        checkOrderExist.OrderStatus = Ebook_delivered.ToString();
+                        await _orderRepository.Save();
+                    }
+                    
+                }
+                return new ServiceResponse<string>
+                {
                     Message = "Successfully",
                     Success = true,
                     StatusCode = 204
@@ -381,6 +564,37 @@ namespace Service.Services
                 return new ServiceResponse<int>
                 {
                     Data = order.Id,
+                    Message = "Successfully",
+                    Success = true,
+                    StatusCode = 201
+                };
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<ServiceResponse<string>> CreateNewOrderWithOnlinePayment(Order order, HttpContext context)
+        {
+            try
+            {
+                //validation in here
+                //starting insert into Db
+                
+
+                OrderStatus processing = OrderStatus.In_Progress;
+                order.CreateDate = DateTime.Now;
+                order.PaymentMethod = "Thanh toán online";
+                order.OrderStatus = processing.ToString();
+                await _orderRepository.Insert(order);
+                
+                var url = _vnPayService.CreatePaymentUrl(order, context);
+
+                return new ServiceResponse<string>
+                {
+                    Data = url,
                     Message = "Successfully",
                     Success = true,
                     StatusCode = 201
