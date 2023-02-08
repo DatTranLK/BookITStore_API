@@ -124,7 +124,7 @@ namespace Bookstore_API_JFF.Controllers
                 return StatusCode(500, "Internal server error: " + ex.Message);
             }
         }
-        [HttpPost("order", Name = "CreateNewOrder")]
+        [HttpPost("order/ocd-payment", Name = "CreateNewOrder")]
         [Produces("application/json")]
         [ProducesResponseType((int)HttpStatusCode.Created)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
@@ -133,6 +133,40 @@ namespace Bookstore_API_JFF.Controllers
             try
             {
                 var res = await _orderService.CreateNewOrder(order);
+                return StatusCode((int)res.StatusCode, res);
+            }
+            catch (Exception ex)
+            {
+
+                return StatusCode(500, "Internal server error: " + ex.Message);
+            }
+        }
+        [HttpPost("order/online-payment", Name = "CreateNewOrderWithOnlinePayment")]
+        [Produces("application/json")]
+        [ProducesResponseType((int)HttpStatusCode.Created)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        public async Task<ActionResult<ServiceResponse<string>>> CreateNewOrderWithOnlinePayment([FromBody] Order order)
+        {
+            try
+            {
+                var res = await _orderService.CreateNewOrderWithOnlinePayment(order, HttpContext);
+                return StatusCode((int)res.StatusCode, res);
+            }
+            catch (Exception ex)
+            {
+
+                return StatusCode(500, "Internal server error: " + ex.Message);
+            }
+        }
+        [HttpPut("order/order-status/accepted-online-payment", Name = "CheckingPaidWithOnlineMethod")]
+        [Produces("application/json")]
+        [ProducesResponseType((int)HttpStatusCode.NoContent)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        public async Task<ActionResult<ServiceResponse<string>>> CheckingPaidWithOnlineMethod(int orderId)
+        {
+            try
+            {
+                var res = await _orderService.CheckingPaidWithOlinePaymentMethod(orderId);
                 return StatusCode((int)res.StatusCode, res);
             }
             catch (Exception ex)

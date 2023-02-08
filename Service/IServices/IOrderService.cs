@@ -1,5 +1,6 @@
 ﻿using Entity.Dtos.Order;
 using Entity.Models;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,11 +21,14 @@ namespace Service.IServices
         Task<ServiceResponse<OrderDtoForCus>> GetOrderByIdForCus(int orderId);
 
         Task<ServiceResponse<int>> CreateNewOrder(Order order);
+        Task<ServiceResponse<string>> CreateNewOrderWithOnlinePayment(Order order, HttpContext context);
 
         //Change order status
         Task<ServiceResponse<string>> ChangeOrderStatusToAcceptedWithOCDMethod(int orderId);
         Task<ServiceResponse<string>> ChangeOrderStatusToPaidWithOCDMethod(int orderId);
         Task<ServiceResponse<string>> ChangeOrderStatusToCancel(int orderId);
         Task<ServiceResponse<string>> ChangeOrderStatusToDone(int orderId);
+        //Change order status online payment
+        Task<ServiceResponse<string>> CheckingPaidWithOlinePaymentMethod(int orderId);
     }
 }

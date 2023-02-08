@@ -80,6 +80,7 @@ namespace Bookstore_API_JFF
             services.AddScoped<IOrderService, OrderService>();
             services.AddScoped<IComboBookService, ComboBookService>();
             services.AddScoped<IDetailComboBookService, DetailComboBookService>();
+            services.AddScoped<IVnPayService, VnPayService>();
 
             //For Json Cycle
             services.AddControllersWithViews().AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
