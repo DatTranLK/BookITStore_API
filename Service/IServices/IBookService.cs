@@ -17,5 +17,11 @@ namespace Service.IServices
         Task<ServiceResponse<int>> CreateNewPhysicalBook(Book book);
         Task<ServiceResponse<Book>> UpdatePhysicalBook(int id, Book book);
         Task<ServiceResponse<int>> CreateNewPhysicalBookAndEBook(BookDtoForPhysicalAndEBook bookDtoForPhysicalAndEBook);
+
+        Task<ServiceResponse<IEnumerable<BookShowDto>>> GetBooksShowWithPagination(int page, int pageSize);
+        Task<ServiceResponse<int>> CountBooksShow();
+
+        Task<ServiceResponse<IEnumerable<BookShowDtoVer2>>> GetBooksShowVer2WithPagination(int page, int pageSize);
+        Task<ServiceResponse<int>> CountBooksShowVer2();
     }
 }
