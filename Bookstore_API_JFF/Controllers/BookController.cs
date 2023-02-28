@@ -144,5 +144,74 @@ namespace Bookstore_API_JFF.Controllers
                 return StatusCode(500, "Internal server error: " + ex.Message);
             }
         }
+
+        [HttpGet("cus/books", Name = "GetBooksShowWithPagination")]
+        [Produces("application/json")]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        public async Task<ActionResult<ServiceResponse<IEnumerable<BookShowDto>>>> GetBooksShowWithPagination([FromQuery] int page, [FromQuery] int pageSize)
+        {
+            try
+            {
+                var res = await _bookService.GetBooksShowWithPagination(page, pageSize);
+                return StatusCode((int)res.StatusCode, res);
+            }
+            catch (Exception ex)
+            {
+
+                return StatusCode(500, "Internal server error: "+ex.Message);
+            }
+        }
+        [HttpGet("cus/books/count", Name = "CountBooksShowWithPagination")]
+        [Produces("application/json")]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        public async Task<ActionResult<ServiceResponse<int>>> CountBooksShowWithPagination()
+        {
+            try
+            {
+                var res = await _bookService.CountBooksShow();
+                return StatusCode((int)res.StatusCode, res);
+            }
+            catch (Exception ex)
+            {
+
+                return StatusCode(500, "Internal server error: " + ex.Message);
+            }
+        }
+        [HttpGet("cus/top-books", Name = "GetBooksShowVer2WithPagination")]
+        [Produces("application/json")]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        public async Task<ActionResult<ServiceResponse<IEnumerable<BookShowDtoVer2>>>> GetBooksShowVer2WithPagination([FromQuery] int page, [FromQuery] int pageSize)
+        {
+            try
+            {
+                var res = await _bookService.GetBooksShowVer2WithPagination(page, pageSize);
+                return StatusCode((int)res.StatusCode, res);
+            }
+            catch (Exception ex)
+            {
+
+                return StatusCode(500, "Internal server error: " + ex.Message);
+            }
+        }
+        [HttpGet("cus/top-books/count", Name = "CountBooksShowVer2WithPagination")]
+        [Produces("application/json")]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        public async Task<ActionResult<ServiceResponse<int>>> CountBooksShowVer2WithPagination()
+        {
+            try
+            {
+                var res = await _bookService.CountBooksShowVer2();
+                return StatusCode((int)res.StatusCode, res);
+            }
+            catch (Exception ex)
+            {
+
+                return StatusCode(500, "Internal server error: " + ex.Message);
+            }
+        }
     }
 }
