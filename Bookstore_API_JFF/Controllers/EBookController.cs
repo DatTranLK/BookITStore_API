@@ -1,4 +1,5 @@
-﻿using Entity.Dtos.EBook;
+﻿using Entity.Dtos.Book;
+using Entity.Dtos.EBook;
 using Entity.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -16,10 +17,12 @@ namespace Bookstore_API_JFF.Controllers
     public class EBookController : ControllerBase
     {
         private readonly IEBookService _eBookService;
+        private readonly IBookService _bookService;
 
-        public EBookController(IEBookService eBookService)
+        public EBookController(IEBookService eBookService, IBookService bookService)
         {
             _eBookService = eBookService;
+            _bookService = bookService;
         }
         [HttpGet(Name = "GetEBooks")]
         [Produces("application/json")]
@@ -123,6 +126,41 @@ namespace Bookstore_API_JFF.Controllers
             try
             {
                 var res = await _eBookService.ChangeInformationOfEBook(id, eBookDtoForUpdate);
+                return StatusCode((int)res.StatusCode, res);
+            }
+            catch (Exception ex)
+            {
+
+                return StatusCode(500, "Internal server error: " + ex.Message);
+            }
+        }
+
+        [HttpGet("admin/e-books", Name = "GetEBookWithPagination")]
+        [Produces("application/json")]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        public async Task<ActionResult<ServiceResponse<IEnumerable<BookDtoForAdmin>>>> GetEBookWithPagination([FromQuery] int page, [FromQuery] int pageSize)
+        {
+            try
+            {
+                var res = await _eBookService.GetEBookWithPagination(page, pageSize);
+                return StatusCode((int)res.StatusCode, res);
+            }
+            catch (Exception ex)
+            {
+
+                return StatusCode(500, "Internal server error: " + ex.Message);
+            }
+        }
+        [HttpGet("admin/e-books/count", Name = "CountEBooksForAdmin")]
+        [Produces("application/json")]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        public async Task<ActionResult<ServiceResponse<int>>> CountEBooksForAdmin()
+        {
+            try
+            {
+                var res = await _eBookService.CountEBooks();
                 return StatusCode((int)res.StatusCode, res);
             }
             catch (Exception ex)

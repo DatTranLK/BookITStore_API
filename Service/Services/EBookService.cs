@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Entity.Dtos.Book;
 using Entity.Dtos.EBook;
 using Entity.Models;
 using Repository.IRepositories;
@@ -16,13 +17,15 @@ namespace Service.Services
     public class EBookService : IEBookService
     {
         private readonly IEBookRepository _eBookRepository;
+        private readonly IBookRepository _bookRepository;
         MapperConfiguration config = new MapperConfiguration(cfg =>
         {
             cfg.AddProfile(new MappingProfile());
         });
-        public EBookService(IEBookRepository eBookRepository)
+        public EBookService(IEBookRepository eBookRepository, IBookRepository bookRepository)
         {
             _eBookRepository = eBookRepository;
+            _bookRepository = bookRepository;
         }
 
         public async Task<ServiceResponse<string>> ChangeInformationOfEBook(int id, EBookDtoForUpdate eBookDtoForUpdate)
@@ -90,6 +93,36 @@ namespace Service.Services
                     Message = "Successfully",
                     Success = true,
                     StatusCode = 200
+                };
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<ServiceResponse<int>> CountEBooks()
+        {
+            try
+            {
+                var count = await _bookRepository.CountAll(x => x.Amount == null);
+                if (count <= 0)
+                {
+                    return new ServiceResponse<int>
+                    {
+                        Data = 0,
+                        Message = "Succesfully",
+                        StatusCode = 200,
+                        Success = true
+                    };
+                }
+                return new ServiceResponse<int>
+                {
+                    Data = count,
+                    Message = "Succesfully",
+                    StatusCode = 200,
+                    Success = true
                 };
             }
             catch (Exception ex)
@@ -239,6 +272,46 @@ namespace Service.Services
             }
         }
 
+        public async Task<ServiceResponse<IEnumerable<BookDtoForAdmin>>> GetEBookWithPagination(int page, int pageSize)
+        {
+            try
+            {
+                if (page <= 0)
+                {
+                    page = 1;
+                }
+                List<Expression<Func<Book, object>>> includes = new List<Expression<Func<Book, object>>>
+                {
+                    x => x.Category,
+                    x => x.Publisher
+                };
+                var lst = await _bookRepository.GetAllWithPagination(x => x.Amount == null, includes, x => x.Id, true, page, pageSize);
+                var mapper = config.CreateMapper();
+                var lstDto = mapper.Map<IEnumerable<BookDtoForAdmin>>(lst);
+                if (lstDto.Count() <= 0)
+                {
+                    return new ServiceResponse<IEnumerable<BookDtoForAdmin>>
+                    {
+                        Message = "No rows",
+                        StatusCode = 200,
+                        Success = true
+                    };
+                }
+                return new ServiceResponse<IEnumerable<BookDtoForAdmin>>
+                {
+                    Data = lstDto,
+                    Message = "Succesfully",
+                    StatusCode = 200,
+                    Success = true
+                };
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception(ex.Message);
+            }
+        }
+
         /*public async Task<ServiceResponse<EBookDtoForUpdate>> UpdateEBook(EBookDtoForUpdate eBookDtoForUpdate, int bookId)
         {
             try
@@ -315,20 +388,20 @@ namespace Service.Services
                 {
                     checkExist.Book.IsSetBook = ebook.Book.IsSetBook;
                 }*/
-                /*await _eBookRepository.Update(checkExist);*//*
-                return new ServiceResponse<EBookDtoForUpdate>
-                { 
-                    Data = eBookDtoForUpdate,
-                    Message = "Successfully",
-                    Success = true,
-                    StatusCode = 204
-                };
-            }
-            catch (Exception ex)
-            {
+        /*await _eBookRepository.Update(checkExist);*//*
+        return new ServiceResponse<EBookDtoForUpdate>
+        { 
+            Data = eBookDtoForUpdate,
+            Message = "Successfully",
+            Success = true,
+            StatusCode = 204
+        };
+    }
+    catch (Exception ex)
+    {
 
-                throw new Exception(ex.Message);
-            }
-        }*/
+        throw new Exception(ex.Message);
+    }
+}*/
     }
 }

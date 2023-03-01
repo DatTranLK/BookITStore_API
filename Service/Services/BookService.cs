@@ -115,6 +115,36 @@ namespace Service.Services
             }
         }
 
+        public async Task<ServiceResponse<int>> CountPhysicalBooks()
+        {
+            try
+            {
+                var count = await _bookRepository.CountAll(x => x.Amount != null);
+                if (count <= 0)
+                {
+                    return new ServiceResponse<int>
+                    {
+                        Data = 0,
+                        Message = "Succesfully",
+                        StatusCode = 200,
+                        Success = true
+                    };
+                }
+                return new ServiceResponse<int>
+                {
+                    Data = count,
+                    Message = "Succesfully",
+                    StatusCode = 200,
+                    Success = true
+                };
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception(ex.Message);
+            }
+        }
+
         public async Task<ServiceResponse<int>> CreateNewPhysicalBook(Book book)
         {
             try
@@ -353,6 +383,46 @@ namespace Service.Services
                 {
                     Data = lstDto,
                     Message = "Successfully",
+                    StatusCode = 200,
+                    Success = true
+                };
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<ServiceResponse<IEnumerable<BookDtoForAdmin>>> GetPhysicalBookWithPagination(int page, int pageSize)
+        {
+            try
+            {
+                if (page <= 0)
+                {
+                    page = 1;
+                }
+                List<Expression<Func<Book, object>>> includes = new List<Expression<Func<Book, object>>>
+                {
+                    x => x.Category,
+                    x => x.Publisher
+                };
+                var lst = await _bookRepository.GetAllWithPagination(x => x.Amount != null, includes, x => x.Id, true, page, pageSize);
+                var mapper = config.CreateMapper();
+                var lstDto = mapper.Map<IEnumerable<BookDtoForAdmin>>(lst);
+                if (lstDto.Count() <= 0)
+                {
+                    return new ServiceResponse<IEnumerable<BookDtoForAdmin>>
+                    {
+                        Message = "No rows",
+                        StatusCode = 200,
+                        Success = true
+                    };
+                }
+                return new ServiceResponse<IEnumerable<BookDtoForAdmin>>
+                {
+                    Data = lstDto,
+                    Message = "Succesfully",
                     StatusCode = 200,
                     Success = true
                 };
