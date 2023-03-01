@@ -1,4 +1,5 @@
-﻿using Entity.Dtos.EBook;
+﻿using Entity.Dtos.Book;
+using Entity.Dtos.EBook;
 using Entity.Models;
 using System;
 using System.Collections.Generic;
@@ -16,5 +17,9 @@ namespace Service.IServices
         Task<ServiceResponse<EBookDto>> GetEBookByBookId(int bookId);
         Task<ServiceResponse<int>> CreateNewEBook(EBookDto eBookDto);
         Task<ServiceResponse<string>> ChangeInformationOfEBook(int id, EBookDtoForUpdate eBookDtoForUpdate);
+
+        Task<ServiceResponse<IEnumerable<BookDtoForAdmin>>> GetEBookWithPagination(int page, int pageSize);
+
+        Task<ServiceResponse<int>> CountEBooks();
     }
 }
