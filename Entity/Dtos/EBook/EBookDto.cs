@@ -13,7 +13,6 @@ namespace Entity.Dtos.EBook
         public int EbookId { get; set; }
         public int? Price { get; set; }
         public string PdfUrl { get; set; }
-        public bool? HasPhysicalBook { get; set; }
 
         public string Name { get; set; }
         public string Isbn { get; set; }
