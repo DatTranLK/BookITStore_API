@@ -485,6 +485,10 @@ namespace Service.Services
                 {
                     checkExist.PublisherId = book.PublisherId;
                 }
+                if (!string.IsNullOrEmpty(book.HasEbook.ToString()))
+                {
+                    checkExist.HasEbook = book.HasEbook;
+                }
                 await _bookRepository.Update(checkExist);
                 return new ServiceResponse<Book>
                 { 
