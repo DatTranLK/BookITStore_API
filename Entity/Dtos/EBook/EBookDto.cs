@@ -26,7 +26,5 @@ namespace Entity.Dtos.EBook
         public bool? IsActive { get; set; }
         public int? CategoryId { get; set; }
         public int? PublisherId { get; set; }
-        public int? SetBookId { get; set; }
-        public bool? IsSetBook { get; set; }
     }
 }

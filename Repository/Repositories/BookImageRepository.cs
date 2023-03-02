@@ -11,9 +11,9 @@ namespace Repository.Repositories
 {
     public class BookImageRepository : GenericRepository<BookImage>, IBookImageRepository
     {
-        private readonly BookStoreDBAPIContext _dbContext;
+        private readonly db_a956d7_bookstoredbContext _dbContext;
 
-        public BookImageRepository(BookStoreDBAPIContext dbContext) : base(dbContext)
+        public BookImageRepository(db_a956d7_bookstoredbContext dbContext) : base(dbContext)
         {
             _dbContext = dbContext;
         }

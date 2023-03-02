@@ -22,8 +22,6 @@ namespace Entity.Dtos.Book
         public int? AmountSold { get; set; }
         public int? CategoryId { get; set; }
         public int? PublisherId { get; set; }
-        public int? SetBookId { get; set; }
-        public bool? IsSetBook { get; set; }
         public int? EBookPrice { get; set; }
         public string PdfUrl { get; set; }
         public bool? HasPhysicalBook { get; set; }

@@ -28,14 +28,11 @@ namespace Entity.Models
         public bool? IsActive { get; set; }
         public int? CategoryId { get; set; }
         public int? PublisherId { get; set; }
-        public int? SetBookId { get; set; }
-        public bool? IsSetBook { get; set; }
+        public bool? HasEbook { get; set; }
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public virtual Category Category { get; set; }
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public virtual Publisher Publisher { get; set; }
-        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public virtual SetBook SetBook { get; set; }
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public virtual Ebook Ebook { get; set; }
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]

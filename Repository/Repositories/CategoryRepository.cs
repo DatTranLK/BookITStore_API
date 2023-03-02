@@ -11,9 +11,9 @@ namespace Repository.Repositories
 {
     public class CategoryRepository : GenericRepository<Category>, ICategoryRepository
     {
-        private readonly BookStoreDBAPIContext _dbContext;
+        private readonly db_a956d7_bookstoredbContext _dbContext;
 
-        public CategoryRepository(BookStoreDBAPIContext dbContext) : base(dbContext)
+        public CategoryRepository(db_a956d7_bookstoredbContext dbContext) : base(dbContext)
         {
             _dbContext = dbContext;
         }

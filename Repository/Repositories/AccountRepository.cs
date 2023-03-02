@@ -11,9 +11,9 @@ namespace Repository.Repositories
 {
     public class AccountRepository : GenericRepository<Account>, IAccountRepository
     {
-        private readonly BookStoreDBAPIContext _dbContext;
+        private readonly db_a956d7_bookstoredbContext _dbContext;
 
-        public AccountRepository(BookStoreDBAPIContext dbContext) : base(dbContext)
+        public AccountRepository(db_a956d7_bookstoredbContext dbContext) : base(dbContext)
         {
             _dbContext = dbContext;
         }

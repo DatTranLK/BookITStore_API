@@ -16,7 +16,6 @@ namespace Entity.Models
         public int EbookId { get; set; }
         public int? Price { get; set; }
         public string PdfUrl { get; set; }
-        public bool? HasPhysicalBook { get; set; }
 
         public virtual Book Book { get; set; }
         public virtual ICollection<OrderDetail> OrderDetails { get; set; }

@@ -134,7 +134,40 @@ namespace Bookstore_API_JFF.Controllers
                 return StatusCode(500, "Internal server error: " + ex.Message);
             }
         }
+        [HttpGet("cus/top-ebooks", Name = "GetEBooksShowVer2WithPagination")]
+        [Produces("application/json")]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        public async Task<ActionResult<ServiceResponse<IEnumerable<BookShowDtoVer2>>>> GetEBooksShowVer2WithPagination([FromQuery] int page, [FromQuery] int pageSize)
+        {
+            try
+            {
+                var res = await _eBookService.GetEBookForCusWithPagination(page, pageSize);
+                return StatusCode((int)res.StatusCode, res);
+            }
+            catch (Exception ex)
+            {
 
+                return StatusCode(500, "Internal server error: " + ex.Message);
+            }
+        }
+        [HttpGet("cus/top-ebooks/count", Name = "CountEBooksShowVer2WithPagination")]
+        [Produces("application/json")]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        public async Task<ActionResult<ServiceResponse<int>>> CountEBooksShowVer2WithPagination()
+        {
+            try
+            {
+                var res = await _eBookService.CountEBooksForCus();
+                return StatusCode((int)res.StatusCode, res);
+            }
+            catch (Exception ex)
+            {
+
+                return StatusCode(500, "Internal server error: " + ex.Message);
+            }
+        }
         [HttpGet("admin/e-books", Name = "GetEBookWithPagination")]
         [Produces("application/json")]
         [ProducesResponseType((int)HttpStatusCode.OK)]

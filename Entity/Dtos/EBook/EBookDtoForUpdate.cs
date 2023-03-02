@@ -11,7 +11,6 @@ namespace Entity.Dtos.EBook
     {
         public int? Price { get; set; }
         public string PdfUrl { get; set; }
-        public bool? HasPhysicalBook { get; set; }
 
     }
 }

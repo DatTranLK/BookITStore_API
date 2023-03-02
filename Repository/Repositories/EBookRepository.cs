@@ -11,9 +11,9 @@ namespace Repository.Repositories
 {
     public class EBookRepository : GenericRepository<Ebook>, IEBookRepository
     {
-        private readonly BookStoreDBAPIContext _dbContext;
+        private readonly db_a956d7_bookstoredbContext _dbContext;
 
-        public EBookRepository(BookStoreDBAPIContext dbContext) : base(dbContext)
+        public EBookRepository(db_a956d7_bookstoredbContext dbContext) : base(dbContext)
         {
             _dbContext = dbContext;
         }

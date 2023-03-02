@@ -11,9 +11,9 @@ namespace Repository.Repositories
 {
     public class DetailComboBookRepository : GenericRepository<DetailComboBook>, IDetailComboBookRepository
     {
-        private readonly BookStoreDBAPIContext dbContext;
+        private readonly db_a956d7_bookstoredbContext dbContext;
 
-        public DetailComboBookRepository(BookStoreDBAPIContext dbContext) : base(dbContext)
+        public DetailComboBookRepository(db_a956d7_bookstoredbContext dbContext) : base(dbContext)
         {
             this.dbContext = dbContext;
         }

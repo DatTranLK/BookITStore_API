@@ -11,9 +11,9 @@ namespace Repository.Repositories
 {
     public class OrderRepository : GenericRepository<Order>, IOrderRepository
     {
-        private readonly BookStoreDBAPIContext _dbContext;
+        private readonly db_a956d7_bookstoredbContext _dbContext;
 
-        public OrderRepository(BookStoreDBAPIContext dbContext) : base(dbContext)
+        public OrderRepository(db_a956d7_bookstoredbContext dbContext) : base(dbContext)
         {
             _dbContext = dbContext;
         }
