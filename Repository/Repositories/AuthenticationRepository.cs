@@ -16,10 +16,10 @@ namespace Repository.Repositories
 {
     public class AuthenticationRepository : GenericRepository<Account>, IAuthenticationRepository
     {
-        private readonly BookStoreDBAPIContext _dbContext;
+        private readonly db_a956d7_bookstoredbContext _dbContext;
         private readonly IConfiguration _configuration;
 
-        public AuthenticationRepository(BookStoreDBAPIContext dbContext, IConfiguration configuration) : base(dbContext)
+        public AuthenticationRepository(db_a956d7_bookstoredbContext dbContext, IConfiguration configuration) : base(dbContext)
         {
             _dbContext = dbContext;
             _configuration = configuration;

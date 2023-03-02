@@ -52,11 +52,6 @@ namespace Service.Services
                     checkExist.PdfUrl = eBookDtoForUpdate.PdfUrl;
                     await _eBookRepository.Save();
                 }
-                if (!string.IsNullOrEmpty(eBookDtoForUpdate.HasPhysicalBook.ToString()))
-                {
-                    checkExist.HasPhysicalBook = eBookDtoForUpdate.HasPhysicalBook;
-                    await _eBookRepository.Save();
-                }
                 
                 return new ServiceResponse<string>
                 {
@@ -132,6 +127,36 @@ namespace Service.Services
             }
         }
 
+        public async Task<ServiceResponse<int>> CountEBooksForCus()
+        {
+            try
+            {
+                var count = await _bookRepository.CountAll(x => x.IsActive == true && x.Amount == null);
+                if (count <= 0)
+                {
+                    return new ServiceResponse<int>
+                    {
+                        Data = 0,
+                        Success = true,
+                        Message = "Successfully",
+                        StatusCode = 200
+                    };
+                }
+                return new ServiceResponse<int>
+                {
+                    Data = count,
+                    Success = true,
+                    Message = "Successfully",
+                    StatusCode = 200
+                };
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception(ex.Message);
+            }
+        }
+
         public async Task<ServiceResponse<int>> CreateNewEBook(EBookDto eBookDto)
         {
             try
@@ -141,8 +166,7 @@ namespace Service.Services
                 var _mapper = config.CreateMapper();
                 var eBook = _mapper.Map<Ebook>(eBookDto);
                 eBook.Book.IsActive = true;
-                eBook.Book.SetBookId = null;
-                eBook.Book.IsSetBook = false;
+                eBook.Book.Amount = 0;
                 eBook.Book.AmountSold = 0;
                 await _eBookRepository.Insert(eBook);
                 return new ServiceResponse<int>
@@ -224,6 +248,47 @@ namespace Service.Services
                     Message = "Successfully",
                     StatusCode = 200,
                     Success = true
+                };
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<ServiceResponse<IEnumerable<BookShowDtoVer2>>> GetEBookForCusWithPagination(int page, int pageSize)
+        {
+            try
+            {
+                if (page <= 0)
+                {
+                    page = 1;
+                }
+                List<Expression<Func<Book, object>>> includes = new List<Expression<Func<Book, object>>>
+                {
+                    x => x.BookImages,
+                    x => x.Category,
+                    x => x.Publisher
+                };
+                var lst = await _bookRepository.GetAllWithPagination(x => x.IsActive == true && x.Amount == null, includes, x => x.Id, true, page, pageSize);
+                var _mapper = config.CreateMapper();
+                var lstDto = _mapper.Map<IEnumerable<BookShowDtoVer2>>(lst);
+                if (lst.Count() <= 0)
+                {
+                    return new ServiceResponse<IEnumerable<BookShowDtoVer2>>
+                    {
+                        Message = "No rows",
+                        Success = true,
+                        StatusCode = 200
+                    };
+                }
+                return new ServiceResponse<IEnumerable<BookShowDtoVer2>>
+                {
+                    Data = lstDto,
+                    Message = "Successfully",
+                    Success = true,
+                    StatusCode = 200
                 };
             }
             catch (Exception ex)

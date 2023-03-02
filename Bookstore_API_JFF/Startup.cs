@@ -51,7 +51,7 @@ namespace Bookstore_API_JFF
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Bookstore_API_JFF", Version = "v1" });
             });
             //For DB Context
-            services.AddDbContext<BookStoreDBAPIContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<db_a956d7_bookstoredbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             
             //For DI Repository
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));

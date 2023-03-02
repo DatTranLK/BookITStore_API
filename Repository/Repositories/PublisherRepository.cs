@@ -11,9 +11,9 @@ namespace Repository.Repositories
 {
     public class PublisherRepository : GenericRepository<Publisher>, IPublisherRepository
     {
-        private readonly BookStoreDBAPIContext _dbContext;
+        private readonly db_a956d7_bookstoredbContext _dbContext;
 
-        public PublisherRepository(BookStoreDBAPIContext dbContext) : base(dbContext)
+        public PublisherRepository(db_a956d7_bookstoredbContext dbContext) : base(dbContext)
         {
             _dbContext = dbContext;
         }

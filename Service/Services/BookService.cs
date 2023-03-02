@@ -89,7 +89,7 @@ namespace Service.Services
         {
             try
             {
-                var count = await _bookRepository.CountAll(x => x.IsActive == true);
+                var count = await _bookRepository.CountAll(x => x.IsActive == true && x.Amount > 0);
                 if (count <= 0)
                 {
                     return new ServiceResponse<int>
@@ -152,8 +152,7 @@ namespace Service.Services
                 //Validation in here
                 //Starting insert to Db
                 book.IsActive = true;
-                book.SetBookId = null;
-                book.IsSetBook = false;
+                book.HasEbook = false;
                 book.AmountSold = 0;
                 await _bookRepository.Insert(book);
                 return new ServiceResponse<int>
@@ -180,10 +179,8 @@ namespace Service.Services
                 var _mapper = config.CreateMapper();
                 var bookAndEbook = _mapper.Map<Book>(bookDtoForPhysicalAndEBook);
                 bookAndEbook.IsActive = true;
-                bookAndEbook.SetBookId = null;
-                bookAndEbook.IsSetBook = false;
+                bookAndEbook.HasEbook = true;
                 bookAndEbook.AmountSold = 0;
-                bookAndEbook.Ebook.HasPhysicalBook = true;
                 await _bookRepository.Insert(bookAndEbook);
                 return new ServiceResponse<int>
                 {
@@ -288,7 +285,7 @@ namespace Service.Services
                     x => x.Category,
                     x => x.Publisher
                 };
-                var lst = await _bookRepository.GetAllWithPagination(x => x.IsActive == true, includes, x => x.Id, true, page, pageSize);
+                var lst = await _bookRepository.GetAllWithPagination(x => x.IsActive == true && x.Amount > 0, includes, x => x.Id, true, page, pageSize);
                 var _mapper = config.CreateMapper();
                 var lstDto = _mapper.Map<IEnumerable<BookShowDtoVer2>>(lst);
                 if (lst.Count() <= 0)
@@ -487,14 +484,6 @@ namespace Service.Services
                 if (!string.IsNullOrEmpty(book.PublisherId.ToString()))
                 {
                     checkExist.PublisherId = book.PublisherId;
-                }
-                if (!string.IsNullOrEmpty(book.SetBookId.ToString()))
-                {
-                    checkExist.SetBookId = book.SetBookId;
-                }
-                if (!string.IsNullOrEmpty(book.IsSetBook.ToString()))
-                {
-                    checkExist.IsSetBook = book.IsSetBook;
                 }
                 await _bookRepository.Update(checkExist);
                 return new ServiceResponse<Book>

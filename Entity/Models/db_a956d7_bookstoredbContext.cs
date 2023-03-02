@@ -8,13 +8,13 @@ using Microsoft.Extensions.Configuration;
 
 namespace Entity.Models
 {
-    public partial class BookStoreDBAPIContext : DbContext
+    public partial class db_a956d7_bookstoredbContext : DbContext
     {
-        public BookStoreDBAPIContext()
+        public db_a956d7_bookstoredbContext()
         {
         }
 
-        public BookStoreDBAPIContext(DbContextOptions<BookStoreDBAPIContext> options)
+        public db_a956d7_bookstoredbContext(DbContextOptions<db_a956d7_bookstoredbContext> options)
             : base(options)
         {
         }
@@ -30,7 +30,6 @@ namespace Entity.Models
         public virtual DbSet<OrderDetail> OrderDetails { get; set; }
         public virtual DbSet<Publisher> Publishers { get; set; }
         public virtual DbSet<Role> Roles { get; set; }
-        public virtual DbSet<SetBook> SetBooks { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -97,11 +96,6 @@ namespace Entity.Models
                     .WithMany(p => p.Books)
                     .HasForeignKey(d => d.PublisherId)
                     .HasConstraintName("FK_Book_Publisher");
-
-                entity.HasOne(d => d.SetBook)
-                    .WithMany(p => p.Books)
-                    .HasForeignKey(d => d.SetBookId)
-                    .HasConstraintName("FK_Book_SetBook");
             });
 
             modelBuilder.Entity<BookImage>(entity =>
@@ -231,15 +225,6 @@ namespace Entity.Models
                 entity.ToTable("Role");
 
                 entity.Property(e => e.Name).HasMaxLength(50);
-            });
-
-            modelBuilder.Entity<SetBook>(entity =>
-            {
-                entity.ToTable("SetBook");
-
-                entity.Property(e => e.SetBookId).ValueGeneratedNever();
-
-                entity.Property(e => e.Name).HasMaxLength(250);
             });
 
             OnModelCreatingPartial(modelBuilder);

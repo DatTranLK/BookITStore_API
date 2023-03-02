@@ -11,9 +11,9 @@ namespace Repository.GenericRepositories
 {
     public class GenericRepository<T> : IGenericRepository<T> where T : class
     {
-        private readonly BookStoreDBAPIContext _dbContext;
+        private readonly db_a956d7_bookstoredbContext _dbContext;
 
-        public GenericRepository(BookStoreDBAPIContext dbContext)
+        public GenericRepository(db_a956d7_bookstoredbContext dbContext)
         {
             _dbContext = dbContext;
         }

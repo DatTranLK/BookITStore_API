@@ -20,7 +20,6 @@ namespace Entity.Models
         public string OrderStatus { get; set; }
         public int? CustomerId { get; set; }
         public string PaymentMethod { get; set; }
-
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public virtual Account Customer { get; set; }
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
