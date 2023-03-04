@@ -28,7 +28,7 @@ namespace Service.Services
         {
             try
             {
-                var count = await _accountRepository.CountAll();
+                var count = await _accountRepository.CountAll(x => x.RoleId == 2);
                 if (count <= 0)
                 {
                     return new ServiceResponse<int>
@@ -89,11 +89,11 @@ namespace Service.Services
         {
             try
             {
-                if (page <= 1)
+                if (page <= 0)
                 {
                     page = 1;
                 }
-                var lst = await _accountRepository.GetAllWithPagination(null, null, x => x.Id, true, page, pageSize);
+                var lst = await _accountRepository.GetAllWithPagination(x => x.RoleId == 2, null, x => x.Id, true, page, pageSize);
                 var _mapper = config.CreateMapper();
                 var lstDto = _mapper.Map<IEnumerable<AccountDto>>(lst);
                 if (lst.Count() <= 0)

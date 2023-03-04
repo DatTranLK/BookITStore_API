@@ -29,7 +29,7 @@ namespace Bookstore_API_JFF.Controllers
         {
             try
             {
-                var res = await _accountService.GetAllAcoountWithPagination(page, page);
+                var res = await _accountService.GetAllAcoountWithPagination(page, pageSize);
                 return StatusCode((int)res.StatusCode, res);
             }
             catch (Exception ex)
