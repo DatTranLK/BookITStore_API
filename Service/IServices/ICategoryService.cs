@@ -16,5 +16,8 @@ namespace Service.IServices
         Task<ServiceResponse<string>> DisableOrEnableCategory(int id);
         Task<ServiceResponse<int>> CreateNewCategory(Category category);
         Task<ServiceResponse<Category>> UpdateCategory(int id, Category category);
+
+        Task<ServiceResponse<IEnumerable<CategoryDto>>> GetCategoriesForCusWithPagination(int page, int pageSize);
+        Task<ServiceResponse<int>> CountCategoriesForCus();
     }
 }
