@@ -248,6 +248,39 @@ namespace Bookstore_API_JFF.Controllers
                 return StatusCode(500, "Internal server error: " + ex.Message);
             }
         }
+        [HttpGet("admin/physical-books-and-ebook", Name = "GetPhysicalBookAndEbookWithPagination")]
+        [Produces("application/json")]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        public async Task<ActionResult<ServiceResponse<IEnumerable<BookDtoForAdmin>>>> GetPhysicalBookAndEbookWithPagination([FromQuery] int page, [FromQuery] int pageSize)
+        {
+            try
+            {
+                var res = await _bookService.GetPhysicalBookAndEbookWithPagination(page, pageSize);
+                return StatusCode((int)res.StatusCode, res);
+            }
+            catch (Exception ex)
+            {
 
+                return StatusCode(500, "Internal server error: " + ex.Message);
+            }
+        }
+        [HttpGet("admin/physical-books-and-ebook/count", Name = "CountPhysicalBooksAndEbook")]
+        [Produces("application/json")]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        public async Task<ActionResult<ServiceResponse<int>>> CountPhysicalBooksAndEbook()
+        {
+            try
+            {
+                var res = await _bookService.CountPhysicalBookAndEbook();
+                return StatusCode((int)res.StatusCode, res);
+            }
+            catch (Exception ex)
+            {
+
+                return StatusCode(500, "Internal server error: " + ex.Message);
+            }
+        }
     }
 }

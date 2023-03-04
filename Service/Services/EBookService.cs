@@ -168,6 +168,7 @@ namespace Service.Services
                 eBook.Book.IsActive = true;
                 eBook.Book.Amount = 0;
                 eBook.Book.AmountSold = 0;
+                eBook.Book.HasEbook = true;
                 await _eBookRepository.Insert(eBook);
                 return new ServiceResponse<int>
                 {
