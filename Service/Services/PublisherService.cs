@@ -57,6 +57,36 @@ namespace Service.Services
             }
         }
 
+        public async Task<ServiceResponse<int>> CountPublishersForCus()
+        {
+            try
+            {
+                var count = await _publisherRepository.CountAll(x => x.IsActive == true);
+                if (count <= 0)
+                {
+                    return new ServiceResponse<int>
+                    {
+                        Data = 0,
+                        Message = "Successfully",
+                        Success = true,
+                        StatusCode = 200
+                    };
+                }
+                return new ServiceResponse<int>
+                {
+                    Data = count,
+                    Message = "Successfully",
+                    Success = true,
+                    StatusCode = 200
+                };
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception(ex.Message);
+            }
+        }
+
         public async Task<ServiceResponse<int>> CreatePublisher(Publisher publisher)
         {
             try
@@ -107,6 +137,41 @@ namespace Service.Services
                     Message = "Successfully",
                     Success = true,
                     StatusCode = 204
+                };
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<ServiceResponse<IEnumerable<PublisherDto>>> GetAllPublisherForCusWithPagination(int page, int pageSize)
+        {
+            try
+            {
+                if (page <= 1)
+                {
+                    page = 1;
+                }
+                var lst = await _publisherRepository.GetAllWithPagination(x => x.IsActive == true, null, x => x.Id, true, page, pageSize);
+                var _mapper = config.CreateMapper();
+                var lstDto = _mapper.Map<IEnumerable<PublisherDto>>(lst);
+                if (lst.Count() <= 0)
+                {
+                    return new ServiceResponse<IEnumerable<PublisherDto>>
+                    {
+                        Message = "No rows",
+                        Success = true,
+                        StatusCode = 200
+                    };
+                }
+                return new ServiceResponse<IEnumerable<PublisherDto>>
+                {
+                    Data = lstDto,
+                    Message = "Successfully",
+                    Success = true,
+                    StatusCode = 200
                 };
             }
             catch (Exception ex)
