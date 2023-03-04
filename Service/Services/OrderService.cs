@@ -153,7 +153,7 @@ namespace Service.Services
                     };
                 }
                 OrderStatus processing = OrderStatus.In_Progress;
-                OrderStatus cancel = OrderStatus.Cancle;
+                OrderStatus cancel = OrderStatus.Cancel;
                 if (checkOrderExist.OrderStatus.Equals(processing.ToString()))
                 {
                     checkOrderExist.OrderStatus = cancel.ToString();
