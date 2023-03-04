@@ -14,6 +14,6 @@ namespace Entity.Enum
         Physical_book_delivered,
         Ebook_delivered,
         Done,
-        Cancle
+        Cancel
     }
 }
