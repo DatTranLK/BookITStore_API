@@ -17,6 +17,8 @@ namespace Service.IServices
         Task<ServiceResponse<int>> CreatePublisher(Publisher publisher);
         Task<ServiceResponse<Publisher>> UpdatePublisher(int id, Publisher publisher);
         Task<ServiceResponse<IEnumerable<PublisherDto>>> GetAllPublisherWithPagination(int page, int pageSize);
-        
+
+        Task<ServiceResponse<IEnumerable<PublisherDto>>> GetAllPublisherForCusWithPagination(int page, int pageSize);
+        Task<ServiceResponse<int>> CountPublishersForCus();
     }
 }
