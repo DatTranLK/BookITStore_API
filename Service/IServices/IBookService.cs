@@ -27,5 +27,9 @@ namespace Service.IServices
         Task<ServiceResponse<IEnumerable<BookDtoForAdmin>>> GetPhysicalBookWithPagination(int page, int pageSize);
 
         Task<ServiceResponse<int>> CountPhysicalBooks();
+
+        Task<ServiceResponse<IEnumerable<BookDtoForAdmin>>> GetPhysicalBookAndEbookWithPagination(int page, int pageSize);
+
+        Task<ServiceResponse<int>> CountPhysicalBookAndEbook();
     }
 }
