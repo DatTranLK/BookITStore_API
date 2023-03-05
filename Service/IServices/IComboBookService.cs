@@ -16,5 +16,7 @@ namespace Service.IServices
         Task<ServiceResponse<string>> DisableOrEnableComboBook(int id);
         Task<ServiceResponse<int>> CreateNewComboBook(ComboBook comboBoo, List<int> bookId);
         Task<ServiceResponse<ComboBook>> UpdateComboBook(ComboBook comboBook);
+
+        Task<ServiceResponse<int>> CreateNewComboBookVer2(ComboBook comboBoo);
     }
 }
