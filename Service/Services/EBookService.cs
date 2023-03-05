@@ -131,7 +131,7 @@ namespace Service.Services
         {
             try
             {
-                var count = await _bookRepository.CountAll(x => x.IsActive == true && x.Amount == null);
+                var count = await _bookRepository.CountAll(x => x.IsActive == true && x.Amount == null || x.IsActive == true && x.Amount == 0);
                 if (count <= 0)
                 {
                     return new ServiceResponse<int>
@@ -272,7 +272,7 @@ namespace Service.Services
                     x => x.Category,
                     x => x.Publisher
                 };
-                var lst = await _bookRepository.GetAllWithPagination(x => x.IsActive == true && x.Amount == null, includes, x => x.Id, true, page, pageSize);
+                var lst = await _bookRepository.GetAllWithPagination(x => x.IsActive == true && x.Amount == null || x.IsActive == true && x.Amount == 0, includes, x => x.Id, true, page, pageSize);
                 var _mapper = config.CreateMapper();
                 var lstDto = _mapper.Map<IEnumerable<BookShowDtoVer2>>(lst);
                 if (lst.Count() <= 0)
