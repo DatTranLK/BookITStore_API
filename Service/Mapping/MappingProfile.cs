@@ -27,8 +27,11 @@ namespace Service.Mapping
             CreateMap<Publisher, PublisherDto>().ReverseMap();
             CreateMap<OrderDetail, OrderDetailDto>()
                 .ForMember(dto => dto.BookName, act => act.MapFrom(obj => obj.Book.Name))
+                .ForMember(dto => dto.PriceBook, act => act.MapFrom(obj => obj.Book.Price))
                 .ForMember(dto => dto.EBookName, act => act.MapFrom(obj => obj.Ebook.Book.Name))
-                .ForMember(dto => dto.ComboBookName, act => act.MapFrom(obj => obj.ComboBook.Name));
+                .ForMember(dto => dto.PriceEBook, act => act.MapFrom(obj => obj.Ebook.Price))
+                .ForMember(dto => dto.ComboBookName, act => act.MapFrom(obj => obj.ComboBook.Name))
+                .ForMember(dto => dto.PriceCombo, act => act.MapFrom(obj => obj.ComboBook.PriceReduction));
             CreateMap<BookImage, BookImageDto>().
                 ForMember(dto => dto.BookName, act => act.MapFrom(obj => obj.Book.Name));
             CreateMap<Book, BookDto>()

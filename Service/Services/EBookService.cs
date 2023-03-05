@@ -172,7 +172,7 @@ namespace Service.Services
                 await _eBookRepository.Insert(eBook);
                 return new ServiceResponse<int>
                 {
-                    Data = eBook.EbookId,
+                    Data = eBook.BookId,
                     Message = "Successfully",
                     Success = true,
                     StatusCode = 201
