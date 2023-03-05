@@ -127,7 +127,11 @@ namespace Bookstore_API_JFF.Controllers
                 return StatusCode(500, "Internal server error: " + ex.Message);
             }
         }
-        [HttpPost("book-ebook", Name = "CreateNewPhysicalBookAndEBook")]
+        /// <summary>
+        /// Add New Physical Book - EBook
+        /// </summary>
+        /// 
+        [HttpPost("physicalbook-ebook", Name = "CreateNewPhysicalBookAndEBook")]
         [Produces("application/json")]
         [ProducesResponseType((int)HttpStatusCode.Created)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]

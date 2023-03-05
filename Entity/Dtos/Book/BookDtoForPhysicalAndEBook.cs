@@ -24,6 +24,7 @@ namespace Entity.Dtos.Book
         public int? PublisherId { get; set; }
         public int? EBookPrice { get; set; }
         public string PdfUrl { get; set; }
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public bool? HasPhysicalBook { get; set; }
     }
 }
