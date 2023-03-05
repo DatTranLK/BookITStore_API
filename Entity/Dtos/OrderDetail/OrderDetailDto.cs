@@ -16,7 +16,10 @@ namespace Entity.Dtos.OrderDetail
         public int? Quantity { get; set; }
 
         public string? BookName { get; set; }
+        public decimal? PriceBook { get; set; }
         public string? EBookName { get; set; }
+        public int? PriceEBook { get; set; }
         public string? ComboBookName { get; set; }
+        public decimal? PriceCombo { get; set; }
     }
 }
