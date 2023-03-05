@@ -128,6 +128,22 @@ namespace Bookstore_API_JFF.Controllers
                 return StatusCode(500, "Internal server error: " + ex.Message);
             }
         }
+        [HttpPost("admin/combobook", Name = "CreateNewComboBookVer2")]
+        [Produces("application/json")]
+        [ProducesResponseType((int)HttpStatusCode.Created)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        public async Task<ActionResult<ServiceResponse<int>>> CreateNewComboBookVer2([FromBody] ComboBook comboBook)
+        {
+            try
+            {
+                var res = await comboBookService.CreateNewComboBookVer2(comboBook);
+                return StatusCode((int)res.StatusCode, res);
+            }
+            catch (Exception ex)
+            {
 
+                return StatusCode(500, "Internal server error: " + ex.Message);
+            }
+        }
     }
 }

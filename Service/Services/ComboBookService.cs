@@ -113,6 +113,21 @@ namespace Service.Services
             }
         }
 
+        public async Task<ServiceResponse<int>> CreateNewComboBookVer2(ComboBook comboBoo)
+        {
+            //Validation in here
+            //Starting insert into DB
+            comboBoo.IsActive = true;
+            await comboBookRepository.Insert(comboBoo);
+            return new ServiceResponse<int>
+            {
+                Data = comboBoo.Id,
+                StatusCode = 201,
+                Success = true,
+                Message = "Successfully"
+            };
+        }
+
         public async Task<ServiceResponse<string>> DisableOrEnableComboBook(int id)
         {
             try
