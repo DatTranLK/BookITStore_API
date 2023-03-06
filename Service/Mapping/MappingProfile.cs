@@ -73,6 +73,13 @@ namespace Service.Mapping
             //Map Detail ComboBook
             CreateMap<DetailComboBook, ComboBookDTO>().ReverseMap();
             CreateMap<DetailComboBook, ListBookOfCombo>().ForMember(dto => dto.Book, act => act.MapFrom(obj => obj.Book));
+            CreateMap<DetailComboBook, DetailComboBookDtoShow>()
+                .ForMember(dto => dto.ComboName, act => act.MapFrom(obj => obj.ComboBook.Name))
+                .ForMember(dto => dto.BookName, act => act.MapFrom(obj => obj.Book.Name))
+                .ForMember(dto => dto.BookIsbn, act => act.MapFrom(obj => obj.Book.Isbn))
+                .ForMember(dto => dto.BookAuthor, act => act.MapFrom(obj => obj.Book.Author))
+                .ForMember(dto => dto.CategoryName, act => act.MapFrom(obj => obj.Book.Category.Name))
+                .ForMember(dto => dto.PublisherName, act => act.MapFrom(obj => obj.Book.Publisher.Name));
         }
     }
 }

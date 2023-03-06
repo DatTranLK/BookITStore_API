@@ -56,6 +56,22 @@ namespace Bookstore_API_JFF.Controllers
             }
         }
 
+        [HttpPost("admin/detail-combo-book", Name = "CreateDetailNewComboBookForAdmin")]
+        [Produces("application/json")]
+        public async Task<ActionResult<ServiceResponse<int>>> CreateDetailNewComboBookForAdmin([FromBody]DetailComboBook detailComboBook)
+        {
+            try
+            {
+                var res = await _detailComboBookService.CreateNewDetailComboBookVer2(detailComboBook);
+                return StatusCode((int)res.StatusCode, res);
+            }
+            catch (Exception ex)
+            {
+
+                return StatusCode(500, "Internal server error: " + ex.Message);
+            }
+        }
+
 
         [HttpGet("books-of-combo/{comboId}", Name = "GetDetailComboBooksOfCombo")]
         [Produces("application/json")]
@@ -66,6 +82,23 @@ namespace Bookstore_API_JFF.Controllers
             try
             {
                 var res = await _detailComboBookService.GetListInDetailOfComboBookId(comboId);
+                return StatusCode((int)res.StatusCode, res);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Internal server error: " + ex.Message);
+            }
+        }
+
+        [HttpGet("admin/books-of-combo/{comboId}", Name = "GetComboBooksOfComboWithPagination")]
+        [Produces("application/json")]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        public async Task<ActionResult<ServiceResponse<IEnumerable<DetailComboBookDtoShow>>>> GetComboBooksOfComboWithPagination(int comboId, [FromQuery]int page, [FromQuery]int pageSize)
+        {
+            try
+            {
+                var res = await _detailComboBookService.GetDetailOfComboBookIdWithPagination(comboId, page, pageSize);
                 return StatusCode((int)res.StatusCode, res);
             }
             catch (Exception ex)

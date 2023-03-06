@@ -105,6 +105,71 @@ namespace Service.Services
             }
         }
 
+        public async Task<ServiceResponse<int>> CreateNewDetailComboBookVer2(DetailComboBook detailComboBook)
+        {
+            try
+            {
+                //Validation in here
+                //Starting insert into Db
+                await detailComboBookRepository.Insert(detailComboBook);
+                return new ServiceResponse<int>
+                { 
+                    Data = detailComboBook.Id,
+                    Success = true,
+                    StatusCode = 201,
+                    Message = "Successfully"
+                };
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<ServiceResponse<IEnumerable<DetailComboBookDtoShow>>> GetDetailOfComboBookIdWithPagination(int id, int page, int pageSize)
+        {
+            try
+            {
+                if (page <= 0)
+                {
+                    page = 1;
+                }
+                List<Expression<Func<DetailComboBook, object>>> includes = new List<Expression<Func<DetailComboBook, object>>>
+                {
+                    x => x.Book,
+                    x => x.Book.Category,
+                    x => x.Book.Publisher,
+                    x => x.ComboBook
+                };
+                var list = await detailComboBookRepository.GetAllWithPagination(x => x.ComboBookId == id, includes, null, true, page, pageSize);
+                var mapper = configuration.CreateMapper();
+                var convertedList = mapper.Map<IEnumerable<DetailComboBookDtoShow>>(list);
+                if (convertedList == null)
+                {
+                    return new ServiceResponse<IEnumerable<DetailComboBookDtoShow>>
+                    {
+                        Message = "No combo detail has found",
+                        Success = true,
+                        StatusCode = 200
+                    };
+                }
+                return new ServiceResponse<IEnumerable<DetailComboBookDtoShow>>
+                {
+                    Data = convertedList,
+                    Message = "Successfully",
+                    Success = true,
+                    StatusCode = 200
+                };
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception(ex.Message);
+            }
+            
+        }
+
 
         //lay 1 list sach thuoc combo do 
         public async Task<ServiceResponse<IEnumerable<ListBookOfCombo>>> GetListInDetailOfComboBookId(int id)
