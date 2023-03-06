@@ -209,17 +209,17 @@ namespace Service.Services
                 //Validation in here
                 //Starting insert to Db
      
-                    var checkExist = await detailComboBookRepository.GetById(detailComboBookId);
-                    if (checkExist == null)
+                var checkExist = await detailComboBookRepository.GetById(detailComboBookId);
+                if (checkExist == null)
+                {
+                    return new ServiceResponse<string>
                     {
-                        return new ServiceResponse<string>
-                        {
-                            Message = "No data has found",
-                            Success = true,
-                            StatusCode = 404
-                        };
-                    }
-                    await detailComboBookRepository.Delete(checkExist);
+                        Message = "No data has found",
+                        Success = true,
+                        StatusCode = 404
+                    };
+                }
+                await detailComboBookRepository.Delete(checkExist);
               
                 return new ServiceResponse<string>
                 {
