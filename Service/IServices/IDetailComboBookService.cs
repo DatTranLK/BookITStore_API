@@ -15,7 +15,9 @@ namespace Service.IServices
         Task<ServiceResponse<IEnumerable<ListBookOfCombo>>> GetListInDetailOfComboBookId(int id);
         //Them moi combodetail khi da co san comboid 
         Task<ServiceResponse<int>> CreateNewDetailComboBook(int comboBookId, List<int> bookId);
-        
+        Task<ServiceResponse<int>> CreateNewDetailComboBookVer2(DetailComboBook detailComboBook);
+
         Task<ServiceResponse<string>> RemoveDetailComboBook(int detailComboBookId);
+        Task<ServiceResponse<IEnumerable<DetailComboBookDtoShow>>> GetDetailOfComboBookIdWithPagination(int id, int page, int pageSize);
     }
 }
