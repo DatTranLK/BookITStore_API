@@ -1,4 +1,5 @@
-﻿using Entity.Dtos.Order;
+﻿using Entity;
+using Entity.Dtos.Order;
 using Entity.Models;
 using Microsoft.AspNetCore.Http;
 using System;
@@ -21,7 +22,7 @@ namespace Service.IServices
         Task<ServiceResponse<OrderDtoForCus>> GetOrderByIdForCus(int orderId);
 
         Task<ServiceResponse<int>> CreateNewOrder(Order order);
-        Task<ServiceResponse<string>> CreateNewOrderWithOnlinePayment(Order order, HttpContext context);
+        Task<ServiceResponse<OnlineOrder>> CreateNewOrderWithOnlinePayment(Order order, HttpContext context);
 
         //Change order status
         Task<ServiceResponse<string>> ChangeOrderStatusToAcceptedWithOCDMethod(int orderId);

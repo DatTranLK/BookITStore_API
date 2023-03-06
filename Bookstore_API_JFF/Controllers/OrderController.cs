@@ -1,4 +1,5 @@
-﻿using Entity.Dtos.Order;
+﻿using Entity;
+using Entity.Dtos.Order;
 using Entity.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -145,7 +146,7 @@ namespace Bookstore_API_JFF.Controllers
         [Produces("application/json")]
         [ProducesResponseType((int)HttpStatusCode.Created)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public async Task<ActionResult<ServiceResponse<string>>> CreateNewOrderWithOnlinePayment([FromBody] Order order)
+        public async Task<ActionResult<ServiceResponse<OnlineOrder>>> CreateNewOrderWithOnlinePayment([FromBody] Order order)
         {
             try
             {

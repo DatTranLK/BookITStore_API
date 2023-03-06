@@ -576,7 +576,7 @@ namespace Service.Services
             }
         }
 
-        public async Task<ServiceResponse<string>> CreateNewOrderWithOnlinePayment(Order order, HttpContext context)
+        public async Task<ServiceResponse<OnlineOrder>> CreateNewOrderWithOnlinePayment(Order order, HttpContext context)
         {
             try
             {
@@ -592,9 +592,15 @@ namespace Service.Services
                 
                 var url = _vnPayService.CreatePaymentUrl(order, context);
 
-                return new ServiceResponse<string>
+                var dataResponse = new OnlineOrder() 
                 {
-                    Data = url,
+                    OrderId = order.Id,
+                    Url = url
+                };
+
+                return new ServiceResponse<OnlineOrder>
+                {
+                    Data = dataResponse,
                     Message = "Successfully",
                     Success = true,
                     StatusCode = 201
