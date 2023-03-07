@@ -57,6 +57,10 @@ namespace Service.Mapping
                 .ForMember(dto => dto.EBookPrice, act => act.MapFrom(obj => obj.Ebook.Price))
                 .ForMember(dto => dto.PdfUrl, act => act.MapFrom(obj => obj.Ebook.PdfUrl))
                 .ReverseMap();
+            CreateMap<Book, EBookDtoForAdmin>()
+                .ForMember(dto => dto.PriceEbook, act => act.MapFrom(obj => obj.Ebook.Price))
+                .ForMember(dto => dto.CategoryName, act => act.MapFrom(obj => obj.Category.Name))
+                .ForMember(dto => dto.PublisherName, act => act.MapFrom(obj => obj.Publisher.Name));
             CreateMap<Book, BookShowDto>().ForMember(dto => dto.ImgPath, act => act.MapFrom(obj => obj.BookImages.FirstOrDefault().ImgPath));
             CreateMap<Book, BookShowDtoVer2>()
                 .ForMember(dto => dto.ImgPath, act => act.MapFrom(obj => obj.BookImages.FirstOrDefault().ImgPath))

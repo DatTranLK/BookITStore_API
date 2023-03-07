@@ -172,7 +172,7 @@ namespace Bookstore_API_JFF.Controllers
         [Produces("application/json")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
-        public async Task<ActionResult<ServiceResponse<IEnumerable<BookDtoForAdmin>>>> GetEBookWithPagination([FromQuery] int page, [FromQuery] int pageSize)
+        public async Task<ActionResult<ServiceResponse<IEnumerable<EBookDtoForAdmin>>>> GetEBookWithPagination([FromQuery] int page, [FromQuery] int pageSize)
         {
             try
             {

@@ -338,7 +338,7 @@ namespace Service.Services
             }
         }
 
-        public async Task<ServiceResponse<IEnumerable<BookDtoForAdmin>>> GetEBookWithPagination(int page, int pageSize)
+        public async Task<ServiceResponse<IEnumerable<EBookDtoForAdmin>>> GetEBookWithPagination(int page, int pageSize)
         {
             try
             {
@@ -348,22 +348,23 @@ namespace Service.Services
                 }
                 List<Expression<Func<Book, object>>> includes = new List<Expression<Func<Book, object>>>
                 {
+                    x => x.Ebook,
                     x => x.Category,
                     x => x.Publisher
                 };
                 var lst = await _bookRepository.GetAllWithPagination(x => x.Amount == null || x.Amount == 0, includes, x => x.Id, true, page, pageSize);
                 var mapper = config.CreateMapper();
-                var lstDto = mapper.Map<IEnumerable<BookDtoForAdmin>>(lst);
+                var lstDto = mapper.Map<IEnumerable<EBookDtoForAdmin>>(lst);
                 if (lstDto.Count() <= 0)
                 {
-                    return new ServiceResponse<IEnumerable<BookDtoForAdmin>>
+                    return new ServiceResponse<IEnumerable<EBookDtoForAdmin>>
                     {
                         Message = "No rows",
                         StatusCode = 200,
                         Success = true
                     };
                 }
-                return new ServiceResponse<IEnumerable<BookDtoForAdmin>>
+                return new ServiceResponse<IEnumerable<EBookDtoForAdmin>>
                 {
                     Data = lstDto,
                     Message = "Succesfully",
