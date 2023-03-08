@@ -244,5 +244,124 @@ namespace Bookstore_API_JFF.Controllers
                 return StatusCode(500, "Internal server error: " + ex.Message);
             }
         }
+        [HttpGet("admin/count-order/in-progress", Name = "CountOrderInProgress")]
+        [Produces("application/json")]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        public async Task<ActionResult<ServiceResponse<int>>> CountOrderInProgress()
+        {
+            try
+            {
+                var res = await _orderService.CountOrderInProgress();
+                return StatusCode((int)res.StatusCode, res);
+            }
+            catch (Exception ex)
+            {
+
+                return StatusCode(500, "Internal server error: " + ex.Message);
+            }
+        }
+        [HttpGet("admin/count-order/accepted", Name = "CountOrderAccepted")]
+        [Produces("application/json")]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        public async Task<ActionResult<ServiceResponse<int>>> CountOrderAccepted()
+        {
+            try
+            {
+                var res = await _orderService.CountOrderAccepted();
+                return StatusCode((int)res.StatusCode, res);
+            }
+            catch (Exception ex)
+            {
+
+                return StatusCode(500, "Internal server error: " + ex.Message);
+            }
+        }
+        [HttpGet("admin/count-order/paid", Name = "CountOrderPaid")]
+        [Produces("application/json")]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        public async Task<ActionResult<ServiceResponse<int>>> CountOrderPaid()
+        {
+            try
+            {
+                var res = await _orderService.CountOrderPaid();
+                return StatusCode((int)res.StatusCode, res);
+            }
+            catch (Exception ex)
+            {
+
+                return StatusCode(500, "Internal server error: " + ex.Message);
+            }
+        }
+        [HttpGet("admin/count-order/physical-delivered", Name = "CountOrderPhysicalDelivered")]
+        [Produces("application/json")]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        public async Task<ActionResult<ServiceResponse<int>>> CountOrderPhysicalDelivered()
+        {
+            try
+            {
+                var res = await _orderService.CountOrderPhysical_book_delivered();
+                return StatusCode((int)res.StatusCode, res);
+            }
+            catch (Exception ex)
+            {
+
+                return StatusCode(500, "Internal server error: " + ex.Message);
+            }
+        }
+        [HttpGet("admin/count-order/ebook-delivered", Name = "CountOrderEbookDelivered")]
+        [Produces("application/json")]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        public async Task<ActionResult<ServiceResponse<int>>> CountOrderEbookDelivered()
+        {
+            try
+            {
+                var res = await _orderService.CountOrderEbook_delivered();
+                return StatusCode((int)res.StatusCode, res);
+            }
+            catch (Exception ex)
+            {
+
+                return StatusCode(500, "Internal server error: " + ex.Message);
+            }
+        }
+        [HttpGet("admin/count-order/done", Name = "CountOrderDone")]
+        [Produces("application/json")]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        public async Task<ActionResult<ServiceResponse<int>>> CountOrderDone()
+        {
+            try
+            {
+                var res = await _orderService.CountOrderDone();
+                return StatusCode((int)res.StatusCode, res);
+            }
+            catch (Exception ex)
+            {
+
+                return StatusCode(500, "Internal server error: " + ex.Message);
+            }
+        }
+        [HttpGet("admin/count-order/cancel", Name = "CountOrderCancel")]
+        [Produces("application/json")]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        public async Task<ActionResult<ServiceResponse<int>>> CountOrderCancel()
+        {
+            try
+            {
+                var res = await _orderService.CountOrderCancel();
+                return StatusCode((int)res.StatusCode, res);
+            }
+            catch (Exception ex)
+            {
+
+                return StatusCode(500, "Internal server error: " + ex.Message);
+            }
+        }
     }
 }

@@ -490,6 +490,216 @@ namespace Service.Services
             }
         }
 
+        public async Task<ServiceResponse<int>> CountOrderAccepted()
+        {
+            try
+            {
+                var count = await _orderRepository.CountAll(x => x.OrderStatus == "Accepted");
+                if (count <= 0)
+                {
+                    return new ServiceResponse<int>
+                    {
+                        Data = 0,
+                        Message = "Successfully",
+                        Success = true,
+                        StatusCode = 200
+                    };
+                }
+                return new ServiceResponse<int>
+                {
+                    Data = count,
+                    Message = "Successfully",
+                    Success = true,
+                    StatusCode = 200
+                };
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<ServiceResponse<int>> CountOrderCancel()
+        {
+            try
+            {
+                var count = await _orderRepository.CountAll(x => x.OrderStatus == "Cancel");
+                if (count <= 0)
+                {
+                    return new ServiceResponse<int>
+                    {
+                        Data = 0,
+                        Message = "Successfully",
+                        Success = true,
+                        StatusCode = 200
+                    };
+                }
+                return new ServiceResponse<int>
+                {
+                    Data = count,
+                    Message = "Successfully",
+                    Success = true,
+                    StatusCode = 200
+                };
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<ServiceResponse<int>> CountOrderDone()
+        {
+            try
+            {
+                var count = await _orderRepository.CountAll(x => x.OrderStatus == "Done");
+                if (count <= 0)
+                {
+                    return new ServiceResponse<int>
+                    {
+                        Data = 0,
+                        Message = "Successfully",
+                        Success = true,
+                        StatusCode = 200
+                    };
+                }
+                return new ServiceResponse<int>
+                {
+                    Data = count,
+                    Message = "Successfully",
+                    Success = true,
+                    StatusCode = 200
+                };
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<ServiceResponse<int>> CountOrderEbook_delivered()
+        {
+            try
+            {
+                var count = await _orderRepository.CountAll(x => x.OrderStatus == "Ebook_delivered");
+                if (count <= 0)
+                {
+                    return new ServiceResponse<int>
+                    {
+                        Data = 0,
+                        Message = "Successfully",
+                        Success = true,
+                        StatusCode = 200
+                    };
+                }
+                return new ServiceResponse<int>
+                {
+                    Data = count,
+                    Message = "Successfully",
+                    Success = true,
+                    StatusCode = 200
+                };
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<ServiceResponse<int>> CountOrderInProgress()
+        {
+            try
+            {
+                var count = await _orderRepository.CountAll(x => x.OrderStatus == "In_Progress");
+                if (count <= 0)
+                {
+                    return new ServiceResponse<int>
+                    {
+                        Data = 0,
+                        Message = "Successfully",
+                        Success = true,
+                        StatusCode = 200
+                    };
+                }
+                return new ServiceResponse<int>
+                {
+                    Data = count,
+                    Message = "Successfully",
+                    Success = true,
+                    StatusCode = 200
+                };
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<ServiceResponse<int>> CountOrderPaid()
+        {
+            try
+            {
+                var count = await _orderRepository.CountAll(x => x.OrderStatus == "Paid");
+                if (count <= 0)
+                {
+                    return new ServiceResponse<int>
+                    {
+                        Data = 0,
+                        Message = "Successfully",
+                        Success = true,
+                        StatusCode = 200
+                    };
+                }
+                return new ServiceResponse<int>
+                {
+                    Data = count,
+                    Message = "Successfully",
+                    Success = true,
+                    StatusCode = 200
+                };
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<ServiceResponse<int>> CountOrderPhysical_book_delivered()
+        {
+            try
+            {
+                var count = await _orderRepository.CountAll(x => x.OrderStatus == "Physical_book_delivered");
+                if (count <= 0)
+                {
+                    return new ServiceResponse<int>
+                    {
+                        Data = 0,
+                        Message = "Successfully",
+                        Success = true,
+                        StatusCode = 200
+                    };
+                }
+                return new ServiceResponse<int>
+                {
+                    Data = count,
+                    Message = "Successfully",
+                    Success = true,
+                    StatusCode = 200
+                };
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception(ex.Message);
+            }
+        }
+
         public async Task<ServiceResponse<int>> CountOrdersForAdmin()
         {
             try

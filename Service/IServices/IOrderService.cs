@@ -31,5 +31,14 @@ namespace Service.IServices
         Task<ServiceResponse<string>> ChangeOrderStatusToDone(int orderId);
         //Change order status online payment
         Task<ServiceResponse<string>> CheckingPaidWithOlinePaymentMethod(int orderId);
+        //Count Order By Status
+        Task<ServiceResponse<int>> CountOrderInProgress();
+        Task<ServiceResponse<int>> CountOrderAccepted();
+        Task<ServiceResponse<int>> CountOrderPaid();
+        Task<ServiceResponse<int>> CountOrderPhysical_book_delivered();
+        Task<ServiceResponse<int>> CountOrderEbook_delivered();
+        Task<ServiceResponse<int>> CountOrderDone();
+        Task<ServiceResponse<int>> CountOrderCancel();
+
     }
 }
