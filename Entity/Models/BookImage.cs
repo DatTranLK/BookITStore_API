@@ -11,6 +11,7 @@ namespace Entity.Models
         public int Id { get; set; }
         public string ImgPath { get; set; }
         public int? BookId { get; set; }
+
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public virtual Book Book { get; set; }
     }

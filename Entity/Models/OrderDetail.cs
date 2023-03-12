@@ -14,6 +14,7 @@ namespace Entity.Models
         public int? BookId { get; set; }
         public int? ComboBookId { get; set; }
         public int? Quantity { get; set; }
+
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public virtual Book Book { get; set; }
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]

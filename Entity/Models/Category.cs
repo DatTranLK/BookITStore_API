@@ -17,6 +17,7 @@ namespace Entity.Models
         public string Name { get; set; }
         public string Description { get; set; }
         public bool? IsActive { get; set; }
+
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public virtual ICollection<Book> Books { get; set; }
     }
