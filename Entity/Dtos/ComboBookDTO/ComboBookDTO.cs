@@ -13,6 +13,7 @@ namespace Entity.Dtos.ComboBookDTO
         public int Id { get; set; }
         public string Name { get; set; }
         public decimal? PriceReduction { get; set; }
+        public bool? IsCombo { get; set; }
         public string Description { get; set; }
         public bool? IsActive { get; set; }
 

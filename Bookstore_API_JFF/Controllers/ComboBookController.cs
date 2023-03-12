@@ -28,7 +28,7 @@ namespace Bookstore_API_JFF.Controllers
         [Produces("application/json")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
-        public async Task<ActionResult<ServiceResponse<IEnumerable<CategoryDto>>>> GetCategories([FromQuery] int page, [FromQuery] int pageSize)
+        public async Task<ActionResult<ServiceResponse<IEnumerable<ComboBookDTO>>>> GetComboBooks([FromQuery] int page, [FromQuery] int pageSize)
         {
             try
             {
@@ -45,7 +45,7 @@ namespace Bookstore_API_JFF.Controllers
         [Produces("application/json")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
-        public async Task<ActionResult<ServiceResponse<int>>> CountCategories()
+        public async Task<ActionResult<ServiceResponse<int>>> CountComboBooks()
         {
             try
             {
@@ -62,7 +62,7 @@ namespace Bookstore_API_JFF.Controllers
         [Produces("application/json")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
-        public async Task<ActionResult<ServiceResponse<CategoryDto>>> GetCategoryById(int id)
+        public async Task<ActionResult<ServiceResponse<ComboBookDTO>>> GetCategoryById(int id)
         {
             try
             {
