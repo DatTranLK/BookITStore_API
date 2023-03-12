@@ -16,6 +16,7 @@ namespace Service.IServices
         Task<ServiceResponse<int>> CountBookImages();
         Task<ServiceResponse<string>> DeleteBookImage(int id);
         Task<ServiceResponse<int>> CreateNewBookImage(BookImage bookImage);
+        Task<ServiceResponse<int>> CreateNewEBookImage(BookImage bookImage);
         Task<ServiceResponse<BookImage>> UpdateBookImage(int id, BookImage bookImage);
     }
 }

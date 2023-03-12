@@ -62,7 +62,23 @@ namespace Bookstore_API_JFF.Controllers
         {
             try
             {
-                var res = await _detailComboBookService.CreateNewDetailComboBookVer2(detailComboBook);
+                var res = await _detailComboBookService.CreateNewDetailComboPhysicalBookVer2(detailComboBook);
+                return StatusCode((int)res.StatusCode, res);
+            }
+            catch (Exception ex)
+            {
+
+                return StatusCode(500, "Internal server error: " + ex.Message);
+            }
+        }
+
+        [HttpPost("admin/detail-combo-ebook", Name = "CreateDetailNewComboEBookForAdmin")]
+        [Produces("application/json")]
+        public async Task<ActionResult<ServiceResponse<int>>> CreateDetailNewComboEBookForAdmin([FromBody] DetailComboBook detailComboBook)
+        {
+            try
+            {
+                var res = await _detailComboBookService.CreateNewDetailComboEBookVer2(detailComboBook);
                 return StatusCode((int)res.StatusCode, res);
             }
             catch (Exception ex)

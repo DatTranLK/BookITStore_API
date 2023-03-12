@@ -101,7 +101,7 @@ namespace Service.Services
         {
             try
             {
-                var count = await _bookRepository.CountAll(x => x.Amount == null || x.Amount == 0);
+                var count = await _eBookRepository.CountAll(null);
                 if (count <= 0)
                 {
                     return new ServiceResponse<int>
@@ -131,7 +131,7 @@ namespace Service.Services
         {
             try
             {
-                var count = await _bookRepository.CountAll(x => x.IsActive == true && x.Amount == null || x.IsActive == true && x.Amount == 0);
+                var count = await _eBookRepository.CountAll(x => x.IsActive == true);
                 if (count <= 0)
                 {
                     return new ServiceResponse<int>
@@ -163,16 +163,14 @@ namespace Service.Services
             {
                 //Validation in here 
                 //Starting insert into Db
-                var _mapper = config.CreateMapper();
-                var eBook = _mapper.Map<Ebook>(eBookDto);
-                eBook.Book.IsActive = true;
-                eBook.Book.Amount = 0;
-                eBook.Book.AmountSold = 0;
-                eBook.Book.HasEbook = true;
+                var mapper = config.CreateMapper();
+                var eBook = mapper.Map<Ebook>(eBookDto);
+                eBook.IsActive = true;
+                eBook.AmountSold = 0;
                 await _eBookRepository.Insert(eBook);
                 return new ServiceResponse<int>
                 {
-                    Data = eBook.BookId,
+                    Data = eBook.EbookId,
                     Message = "Successfully",
                     Success = true,
                     StatusCode = 201
@@ -186,7 +184,7 @@ namespace Service.Services
         }
 
 
-        public async Task<ServiceResponse<EBookDto>> GetEBookByBookId(int bookId)
+        /*public async Task<ServiceResponse<EBookDto>> GetEBookByBookId(int bookId)
         {
             try
             {
@@ -220,17 +218,13 @@ namespace Service.Services
 
                 throw new Exception(ex.Message);
             }
-        }
+        }*/
 
         public async Task<ServiceResponse<EBookDto>> GetEBookById(int id)
         {
             try
             {
-                List<Expression<Func<Ebook, object>>> includes = new List<Expression<Func<Ebook, object>>>
-                {
-                    x => x.Book
-                };
-                var ebook = await _eBookRepository.GetByWithCondition(x => x.EbookId == id, includes, true);
+                var ebook = await _eBookRepository.GetByWithCondition(x => x.EbookId == id, null, true);
                 var _mapper = config.CreateMapper();
                 var ebookDto = _mapper.Map<EBookDto>(ebook);
                 if (ebook == null)
@@ -258,7 +252,7 @@ namespace Service.Services
             }
         }
 
-        public async Task<ServiceResponse<IEnumerable<BookShowDtoVer2>>> GetEBookForCusWithPagination(int page, int pageSize)
+        public async Task<ServiceResponse<IEnumerable<EBookShowDtoVer2>>> GetEBookForCusWithPagination(int page, int pageSize)
         {
             try
             {
@@ -266,25 +260,25 @@ namespace Service.Services
                 {
                     page = 1;
                 }
-                List<Expression<Func<Book, object>>> includes = new List<Expression<Func<Book, object>>>
+                List<Expression<Func<Ebook, object>>> includes = new List<Expression<Func<Ebook, object>>>
                 {
                     x => x.BookImages,
                     x => x.Category,
                     x => x.Publisher
                 };
-                var lst = await _bookRepository.GetAllWithPagination(x => x.IsActive == true && x.Amount == null || x.IsActive == true && x.Amount == 0, includes, x => x.Id, true, page, pageSize);
+                var lst = await _eBookRepository.GetAllWithPagination(x => x.IsActive == true, includes, x => x.EbookId, true, page, pageSize);
                 var _mapper = config.CreateMapper();
-                var lstDto = _mapper.Map<IEnumerable<BookShowDtoVer2>>(lst);
+                var lstDto = _mapper.Map<IEnumerable<EBookShowDtoVer2>>(lst);
                 if (lst.Count() <= 0)
                 {
-                    return new ServiceResponse<IEnumerable<BookShowDtoVer2>>
+                    return new ServiceResponse<IEnumerable<EBookShowDtoVer2>>
                     {
                         Message = "No rows",
                         Success = true,
                         StatusCode = 200
                     };
                 }
-                return new ServiceResponse<IEnumerable<BookShowDtoVer2>>
+                return new ServiceResponse<IEnumerable<EBookShowDtoVer2>>
                 {
                     Data = lstDto,
                     Message = "Successfully",
@@ -307,11 +301,8 @@ namespace Service.Services
                 {
                     page = 1;
                 }
-                List<Expression<Func<Ebook, object>>> includes = new List<Expression<Func<Ebook, object>>>
-                { 
-                    x => x.Book
-                };
-                var lst = await _eBookRepository.GetAllWithPagination(null, includes, x => x.EbookId, true, page, pageSize);
+                
+                var lst = await _eBookRepository.GetAllWithPagination(null, null, x => x.EbookId, true, page, pageSize);
                 var _mapper = config.CreateMapper();
                 var lstDto = _mapper.Map<IEnumerable<EBookDto>>(lst);
                 if (lst.Count() <= 0)
@@ -346,13 +337,12 @@ namespace Service.Services
                 {
                     page = 1;
                 }
-                List<Expression<Func<Book, object>>> includes = new List<Expression<Func<Book, object>>>
+                List<Expression<Func<Ebook, object>>> includes = new List<Expression<Func<Ebook, object>>>
                 {
-                    x => x.Ebook,
                     x => x.Category,
                     x => x.Publisher
                 };
-                var lst = await _bookRepository.GetAllWithPagination(x => x.Amount == null || x.Amount == 0, includes, x => x.Id, true, page, pageSize);
+                var lst = await _eBookRepository.GetAllWithPagination(null, includes, x => x.EbookId, true, page, pageSize);
                 var mapper = config.CreateMapper();
                 var lstDto = mapper.Map<IEnumerable<EBookDtoForAdmin>>(lst);
                 if (lstDto.Count() <= 0)

@@ -105,12 +105,36 @@ namespace Service.Services
             }
         }
 
-        public async Task<ServiceResponse<int>> CreateNewDetailComboBookVer2(DetailComboBook detailComboBook)
+        public async Task<ServiceResponse<int>> CreateNewDetailComboEBookVer2(DetailComboBook detailComboBook)
         {
             try
             {
                 //Validation in here
                 //Starting insert into Db
+                detailComboBook.BookId = null;
+                await detailComboBookRepository.Insert(detailComboBook);
+                return new ServiceResponse<int>
+                {
+                    Data = detailComboBook.Id,
+                    Success = true,
+                    StatusCode = 201,
+                    Message = "Successfully"
+                };
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<ServiceResponse<int>> CreateNewDetailComboPhysicalBookVer2(DetailComboBook detailComboBook)
+        {
+            try
+            {
+                //Validation in here
+                //Starting insert into Db
+                detailComboBook.EbookId = null;
                 await detailComboBookRepository.Insert(detailComboBook);
                 return new ServiceResponse<int>
                 { 

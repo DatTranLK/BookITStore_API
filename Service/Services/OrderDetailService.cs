@@ -151,8 +151,7 @@ namespace Service.Services
                     x => x.Order,
                     x => x.Book,
                     x => x.ComboBook,
-                    x => x.Ebook,
-                    x => x.Ebook.Book
+                    x => x.Ebook
                 };
                 var orderDetails = await _orderDetailRepository.GetAllWithCondition(x => x.OrderId == orderId, includes, null, true);
                 var _mapper = config.CreateMapper();
