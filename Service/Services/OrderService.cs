@@ -102,10 +102,10 @@ namespace Service.Services
                             }
                             else if (item.EbookId != null)
                             {
-                                var ebook = await _eBookRepository.GetByWithCondition(x => x.EbookId == item.EbookId, null, true);
-                                var book = await _bookRepository.GetById(ebook.BookId);
-                                book.AmountSold += item.Quantity;
-                                await _bookRepository.Save();
+                                var ebook = await _eBookRepository.GetById(item.EbookId);
+                                
+                                ebook.AmountSold += item.Quantity;
+                                await _eBookRepository.Save();
                             }
                             else if (item.ComboBookId != null)
                             {
@@ -396,7 +396,7 @@ namespace Service.Services
                         else if (item.EbookId != null)
                         {
                             var ebook = await _eBookRepository.GetByWithCondition(x => x.EbookId == item.EbookId, null, true);
-                            var book = await _bookRepository.GetById(ebook.BookId);
+                            var book = await _bookRepository.GetById(ebook.EbookId);
                             book.AmountSold += item.Quantity;
                             await _bookRepository.Save();
                             list.Add(ebook.PdfUrl.ToString());

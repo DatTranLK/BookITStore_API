@@ -9,7 +9,6 @@ namespace Entity.Dtos.EBook
 {
     public class EBookDto
     {
-        public int BookId { get; set; }
         public int EbookId { get; set; }
         public int? Price { get; set; }
         public string PdfUrl { get; set; }

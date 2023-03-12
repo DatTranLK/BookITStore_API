@@ -28,7 +28,7 @@ namespace Bookstore_API_JFF.Controllers
         [Produces("application/json")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
-        public async Task<ActionResult<ServiceResponse<IEnumerable<EBookDto>>>> GetEBooks([FromQuery] int page, [FromQuery] int pageSize)
+        public async Task<ActionResult<ServiceResponse<IEnumerable<Ebook>>>> GetEBooks([FromQuery] int page, [FromQuery] int pageSize)
         {
             try
             {
@@ -62,28 +62,11 @@ namespace Bookstore_API_JFF.Controllers
         [Produces("application/json")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
-        public async Task<ActionResult<ServiceResponse<EBookDto>>> GetEBookById(int id)
+        public async Task<ActionResult<ServiceResponse<Ebook>>> GetEBookById(int id)
         {
             try
             {
                 var res = await _eBookService.GetEBookById(id);
-                return StatusCode((int)res.StatusCode, res);
-            }
-            catch (Exception ex)
-            {
-
-                return StatusCode(500, "Internal server error: " + ex.Message);
-            }
-        }
-        [HttpGet("ebook/book/{bookId}", Name = "GetEBookByBookId")]
-        [Produces("application/json")]
-        [ProducesResponseType((int)HttpStatusCode.OK)]
-        [ProducesResponseType((int)HttpStatusCode.NotFound)]
-        public async Task<ActionResult<ServiceResponse<EBookDto>>> GetEBookByBookId(int bookId)
-        {
-            try
-            {
-                var res = await _eBookService.GetEBookByBookId(bookId);
                 return StatusCode((int)res.StatusCode, res);
             }
             catch (Exception ex)
@@ -100,11 +83,11 @@ namespace Bookstore_API_JFF.Controllers
         [Produces("application/json")]
         [ProducesResponseType((int)HttpStatusCode.Created)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public async Task<ActionResult<ServiceResponse<int>>> CreateNewEBook([FromBody]EBookDto eBookDto)
+        public async Task<ActionResult<ServiceResponse<int>>> CreateNewEBook([FromBody]EBookDto ebookDto)
         {
             try
             {
-                var res = await _eBookService.CreateNewEBook(eBookDto);
+                var res = await _eBookService.CreateNewEBook(ebookDto);
                 return StatusCode((int)res.StatusCode, res);
             }
             catch (Exception ex)
@@ -138,7 +121,7 @@ namespace Bookstore_API_JFF.Controllers
         [Produces("application/json")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
-        public async Task<ActionResult<ServiceResponse<IEnumerable<BookShowDtoVer2>>>> GetEBooksShowVer2WithPagination([FromQuery] int page, [FromQuery] int pageSize)
+        public async Task<ActionResult<ServiceResponse<IEnumerable<EBookShowDtoVer2>>>> GetEBooksShowVer2WithPagination([FromQuery] int page, [FromQuery] int pageSize)
         {
             try
             {

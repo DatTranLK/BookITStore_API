@@ -11,6 +11,7 @@ namespace Entity.Models
         public Category()
         {
             Books = new HashSet<Book>();
+            Ebooks = new HashSet<Ebook>();
         }
 
         public int Id { get; set; }
@@ -20,5 +21,7 @@ namespace Entity.Models
 
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public virtual ICollection<Book> Books { get; set; }
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        public virtual ICollection<Ebook> Ebooks { get; set; }
     }
 }

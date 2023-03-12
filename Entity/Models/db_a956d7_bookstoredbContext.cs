@@ -100,12 +100,19 @@ namespace Entity.Models
 
             modelBuilder.Entity<BookImage>(entity =>
             {
+                entity.Property(e => e.EbookId).HasColumnName("EBookId");
+
                 entity.Property(e => e.ImgPath).HasColumnType("ntext");
 
                 entity.HasOne(d => d.Book)
                     .WithMany(p => p.BookImages)
                     .HasForeignKey(d => d.BookId)
                     .HasConstraintName("FK_BookImages_Book");
+
+                entity.HasOne(d => d.Ebook)
+                    .WithMany(p => p.BookImages)
+                    .HasForeignKey(d => d.EbookId)
+                    .HasConstraintName("FK_BookImages_Ebook");
             });
 
             modelBuilder.Entity<Category>(entity =>
@@ -134,6 +141,8 @@ namespace Entity.Models
             {
                 entity.ToTable("DetailComboBook");
 
+                entity.Property(e => e.EbookId).HasColumnName("EBookId");
+
                 entity.HasOne(d => d.Book)
                     .WithMany(p => p.DetailComboBooks)
                     .HasForeignKey(d => d.BookId)
@@ -143,27 +152,46 @@ namespace Entity.Models
                     .WithMany(p => p.DetailComboBooks)
                     .HasForeignKey(d => d.ComboBookId)
                     .HasConstraintName("FK_DetailComboBook_ComboBook");
+
+                entity.HasOne(d => d.Ebook)
+                    .WithMany(p => p.DetailComboBooks)
+                    .HasForeignKey(d => d.EbookId)
+                    .HasConstraintName("FK_DetailComboBook_Ebook");
             });
 
             modelBuilder.Entity<Ebook>(entity =>
             {
-                entity.HasKey(e => e.BookId);
-
                 entity.ToTable("Ebook");
 
-                entity.Property(e => e.BookId).ValueGeneratedNever();
+                entity.Property(e => e.Author).HasMaxLength(100);
 
-                entity.Property(e => e.EbookId).ValueGeneratedOnAdd();
+                entity.Property(e => e.Description).HasColumnType("ntext");
+
+                entity.Property(e => e.Isbn)
+                    .HasMaxLength(10)
+                    .HasColumnName("ISBN")
+                    .IsFixedLength(true);
+
+                entity.Property(e => e.Name).HasMaxLength(200);
 
                 entity.Property(e => e.PdfUrl)
                     .IsRequired()
                     .HasColumnType("ntext");
 
-                entity.HasOne(d => d.Book)
-                    .WithOne(p => p.Ebook)
-                    .HasForeignKey<Ebook>(d => d.BookId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Ebook_Book");
+                entity.Property(e => e.ReleaseYear)
+                    .HasMaxLength(4)
+                    .IsUnicode(false)
+                    .IsFixedLength(true);
+
+                entity.HasOne(d => d.Category)
+                    .WithMany(p => p.Ebooks)
+                    .HasForeignKey(d => d.CategoryId)
+                    .HasConstraintName("FK_Ebook_Category");
+
+                entity.HasOne(d => d.Publisher)
+                    .WithMany(p => p.Ebooks)
+                    .HasForeignKey(d => d.PublisherId)
+                    .HasConstraintName("FK_Ebook_Publisher");
             });
 
             modelBuilder.Entity<Order>(entity =>

@@ -125,7 +125,7 @@ namespace Bookstore_API_JFF.Controllers
                 return StatusCode(500, "Internal server error: " + ex.Message);
             }
         }
-        [HttpPost("order/ocd-payment", Name = "CreateNewOrder")]
+        [HttpPost("order/cod-payment", Name = "CreateNewOrder")]
         [Produces("application/json")]
         [ProducesResponseType((int)HttpStatusCode.Created)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]

@@ -59,6 +59,27 @@ namespace Service.Services
         {
             try
             {
+                bookImage.EbookId = null;
+                await _bookImageRepository.Insert(bookImage);
+                return new ServiceResponse<int>
+                {
+                    Data = bookImage.Id,
+                    Message = "Successfully",
+                    Success = true,
+                    StatusCode = 201
+                };
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<ServiceResponse<int>> CreateNewEBookImage(BookImage bookImage)
+        {
+            try
+            {
+                bookImage.BookId = null;
                 await _bookImageRepository.Insert(bookImage);
                 return new ServiceResponse<int>
                 {

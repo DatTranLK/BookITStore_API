@@ -115,41 +115,11 @@ namespace Service.Services
             }
         }
 
-        public async Task<ServiceResponse<int>> CountPhysicalBookAndEbook()
-        {
-            try
-            {
-                var count = await _bookRepository.CountAll(x => x.Amount != null && x.HasEbook == true && x.Price != null || x.Amount != 0 && x.Price != null && x.HasEbook == true);
-                if (count <= 0)
-                {
-                    return new ServiceResponse<int>
-                    {
-                        Data = 0,
-                        Message = "Succesfully",
-                        StatusCode = 200,
-                        Success = true
-                    };
-                }
-                return new ServiceResponse<int>
-                {
-                    Data = count,
-                    Message = "Succesfully",
-                    StatusCode = 200,
-                    Success = true
-                };
-            }
-            catch (Exception ex)
-            {
-
-                throw new Exception(ex.Message);
-            }
-        }
-
         public async Task<ServiceResponse<int>> CountPhysicalBooks()
         {
             try
             {
-                var count = await _bookRepository.CountAll(x => x.Amount != null && x.HasEbook == false);
+                var count = await _bookRepository.CountAll(null);
                 if (count <= 0)
                 {
                     return new ServiceResponse<int>
@@ -182,7 +152,6 @@ namespace Service.Services
                 //Validation in here
                 //Starting insert to Db
                 book.IsActive = true;
-                book.HasEbook = false;
                 book.AmountSold = 0;
                 await _bookRepository.Insert(book);
                 return new ServiceResponse<int>
@@ -209,7 +178,6 @@ namespace Service.Services
                 var _mapper = config.CreateMapper();
                 var bookAndEbook = _mapper.Map<Book>(bookDtoForPhysicalAndEBook);
                 bookAndEbook.IsActive = true;
-                bookAndEbook.HasEbook = true;
                 bookAndEbook.AmountSold = 0;
                 await _bookRepository.Insert(bookAndEbook);
                 return new ServiceResponse<int>
@@ -421,7 +389,7 @@ namespace Service.Services
             }
         }
 
-        public async Task<ServiceResponse<IEnumerable<PhysicalBookAndEbookDtoForAdmin>>> GetPhysicalBookAndEbookWithPagination(int page, int pageSize)
+        /*public async Task<ServiceResponse<IEnumerable<PhysicalBookAndEbookDtoForAdmin>>> GetPhysicalBookAndEbookWithPagination(int page, int pageSize)
         {
             try
             {
@@ -431,7 +399,6 @@ namespace Service.Services
                 }
                 List<Expression<Func<Book, object>>> includes = new List<Expression<Func<Book, object>>>
                 {
-                    x => x.Ebook,
                     x => x.Category,
                     x => x.Publisher
                 };
@@ -460,7 +427,7 @@ namespace Service.Services
 
                 throw new Exception(ex.Message);
             }
-        }
+        }*/
 
         public async Task<ServiceResponse<IEnumerable<BookDtoForAdmin>>> GetPhysicalBookWithPagination(int page, int pageSize)
         {
@@ -475,7 +442,7 @@ namespace Service.Services
                     x => x.Category,
                     x => x.Publisher
                 };
-                var lst = await _bookRepository.GetAllWithPagination(x => x.Amount != null && x.HasEbook == false, includes, x => x.Id, true, page, pageSize);
+                var lst = await _bookRepository.GetAllWithPagination(null, includes, x => x.Id, true, page, pageSize);
                 var mapper = config.CreateMapper();
                 var lstDto = mapper.Map<IEnumerable<BookDtoForAdmin>>(lst);
                 if (lstDto.Count() <= 0)
@@ -555,10 +522,6 @@ namespace Service.Services
                 if (!string.IsNullOrEmpty(book.PublisherId.ToString()))
                 {
                     checkExist.PublisherId = book.PublisherId;
-                }
-                if (!string.IsNullOrEmpty(book.HasEbook.ToString()))
-                {
-                    checkExist.HasEbook = book.HasEbook;
                 }
                 await _bookRepository.Update(checkExist);
                 return new ServiceResponse<Book>
