@@ -118,6 +118,7 @@ namespace Service.Services
             //Validation in here
             //Starting insert into DB
             comboBoo.IsActive = true;
+            comboBoo.IsCombo = true;
             await comboBookRepository.Insert(comboBoo);
             return new ServiceResponse<int>
             {

@@ -29,6 +29,7 @@ namespace Entity.Models
         public int? CategoryId { get; set; }
         public int? PublisherId { get; set; }
         public bool? HasEbook { get; set; }
+
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public virtual Category Category { get; set; }
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
