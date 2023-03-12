@@ -77,24 +77,9 @@ namespace Service.Services
                         StatusCode = 200
                     };
                 }
-                var checkIsComboBook = await _comboBookRepository.GetById(orderDetail.ComboBookId);
-                if (orderDetail.ComboBookId != null && checkIsComboBook.IsCombo == true)
-                {
-                    var checkComboExist = await _comboBookRepository.GetById(orderDetail.ComboBookId);
-                    if (checkComboExist == null)
-                    {
-                        return new ServiceResponse<int>
-                        {
-                            Message = "Not found combo book",
-                            Success = true,
-                            StatusCode = 200
-                        };
 
-                    }
-                    orderDetail.BookId = null;
-                    orderDetail.EbookId = null;
-                }
-                else if (orderDetail.BookId != null)
+                
+                 if (orderDetail.BookId != null)
                 {
                     var checkBookExist = await _bookRepository.GetById(orderDetail.BookId);
                     if (checkBookExist == null)
@@ -124,7 +109,23 @@ namespace Service.Services
                     orderDetail.BookId = null;
                     orderDetail.ComboBookId = null;
                 }
-                
+                else if (orderDetail.ComboBookId != null)
+                {
+                    var checkComboExist = await _comboBookRepository.GetById(orderDetail.ComboBookId);
+                    if (checkComboExist == null)
+                    {
+                        return new ServiceResponse<int>
+                        {
+                            Message = "Not found combo book",
+                            Success = true,
+                            StatusCode = 200
+                        };
+
+                    }
+                    orderDetail.BookId = null;
+                    orderDetail.EbookId = null;
+                }
+
                 await _orderDetailRepository.Insert(orderDetail);
                 return new ServiceResponse<int>
                 {
