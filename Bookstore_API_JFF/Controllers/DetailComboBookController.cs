@@ -89,15 +89,15 @@ namespace Bookstore_API_JFF.Controllers
         }
 
 
-        [HttpGet("books-of-combo/{comboId}", Name = "GetDetailComboBooksOfCombo")]
+        [HttpGet("books-of-combo/{comboId}", Name = "GetDetailComboBooksPhysicalOfCombo")]
         [Produces("application/json")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
-        public async Task<ActionResult<ServiceResponse<IEnumerable<ListBookOfCombo>>>> GetDetailComboBooksOfCombo(int comboId)
+        public async Task<ActionResult<ServiceResponse<IEnumerable<ListPhysicalBookOfCombo>>>> GetDetailComboBooksPhysicalOfCombo(int comboId)
         {
             try
             {
-                var res = await _detailComboBookService.GetListInDetailOfComboBookId(comboId);
+                var res = await _detailComboBookService.GetListInDetailPhysicalBookOfComboBookId(comboId);
                 return StatusCode((int)res.StatusCode, res);
             }
             catch (Exception ex)
@@ -105,6 +105,7 @@ namespace Bookstore_API_JFF.Controllers
                 return StatusCode(500, "Internal server error: " + ex.Message);
             }
         }
+        
 
         [HttpGet("admin/books-of-combo/{comboId}", Name = "GetComboBooksOfComboWithPagination")]
         [Produces("application/json")]
@@ -122,6 +123,21 @@ namespace Bookstore_API_JFF.Controllers
                 return StatusCode(500, "Internal server error: " + ex.Message);
             }
         }
-
+        [HttpGet("admin/ebooks-of-combo/{comboId}", Name = "GetComboEBooksOfComboWithPagination")]
+        [Produces("application/json")]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        public async Task<ActionResult<ServiceResponse<IEnumerable<DetailComboEBookDtoShow>>>> GetComboEBooksOfComboWithPagination(int comboId, [FromQuery] int page, [FromQuery] int pageSize)
+        {
+            try
+            {
+                var res = await _detailComboBookService.GetDetailOfComboEBookIdWithPagination(comboId, page, pageSize);
+                return StatusCode((int)res.StatusCode, res);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Internal server error: " + ex.Message);
+            }
+        }
     }
 }
