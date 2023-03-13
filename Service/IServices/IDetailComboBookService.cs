@@ -12,7 +12,7 @@ namespace Service.IServices
 {
     public interface IDetailComboBookService
     {
-        Task<ServiceResponse<IEnumerable<ListBookOfCombo>>> GetListInDetailOfComboBookId(int id);
+        Task<ServiceResponse<IEnumerable<ListPhysicalBookOfCombo>>> GetListInDetailPhysicalBookOfComboBookId(int id);
         //Them moi combodetail khi da co san comboid 
         Task<ServiceResponse<int>> CreateNewDetailComboBook(int comboBookId, List<int> bookId);
         Task<ServiceResponse<int>> CreateNewDetailComboPhysicalBookVer2(DetailComboBook detailComboBook);
@@ -20,5 +20,6 @@ namespace Service.IServices
 
         Task<ServiceResponse<string>> RemoveDetailComboBook(int detailComboBookId);
         Task<ServiceResponse<IEnumerable<DetailComboBookDtoShow>>> GetDetailOfComboBookIdWithPagination(int id, int page, int pageSize);
+        Task<ServiceResponse<IEnumerable<DetailComboEBookDtoShow>>> GetDetailOfComboEBookIdWithPagination(int id, int page, int pageSize);
     }
 }

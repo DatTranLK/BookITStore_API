@@ -194,9 +194,51 @@ namespace Service.Services
             
         }
 
+        public async Task<ServiceResponse<IEnumerable<DetailComboEBookDtoShow>>> GetDetailOfComboEBookIdWithPagination(int id, int page, int pageSize)
+        {
+            try
+            {
+                if (page <= 0)
+                {
+                    page = 1;
+                }
+                List<Expression<Func<DetailComboBook, object>>> includes = new List<Expression<Func<DetailComboBook, object>>>
+                {
+                    x => x.Ebook,
+                    x => x.Ebook.Category,
+                    x => x.Ebook.Publisher,
+                    x => x.ComboBook
+                };
+                var list = await detailComboBookRepository.GetAllWithPagination(x => x.ComboBookId == id, includes, null, true, page, pageSize);
+                var mapper = configuration.CreateMapper();
+                var convertedList = mapper.Map<IEnumerable<DetailComboEBookDtoShow>>(list);
+                if (convertedList == null)
+                {
+                    return new ServiceResponse<IEnumerable<DetailComboEBookDtoShow>>
+                    {
+                        Message = "No combo detail has found",
+                        Success = true,
+                        StatusCode = 200
+                    };
+                }
+                return new ServiceResponse<IEnumerable<DetailComboEBookDtoShow>>
+                {
+                    Data = convertedList,
+                    Message = "Successfully",
+                    Success = true,
+                    StatusCode = 200
+                };
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception(ex.Message);
+            }
+        }
+
 
         //lay 1 list sach thuoc combo do 
-        public async Task<ServiceResponse<IEnumerable<ListBookOfCombo>>> GetListInDetailOfComboBookId(int id)
+        public async Task<ServiceResponse<IEnumerable<ListPhysicalBookOfCombo>>> GetListInDetailPhysicalBookOfComboBookId(int id)
         {
             List<Expression<Func<DetailComboBook, object>>> includes = new List<Expression<Func<DetailComboBook, object>>>
             { 
@@ -207,17 +249,17 @@ namespace Service.Services
             };
             var list = await detailComboBookRepository.GetAllWithCondition(x => x.ComboBookId == id, includes, null, true);
             var mapper = configuration.CreateMapper();
-            var convertedList = mapper.Map< IEnumerable <ListBookOfCombo>> (list);
+            var convertedList = mapper.Map< IEnumerable <ListPhysicalBookOfCombo>> (list);
             if (convertedList == null)
             {
-                return new ServiceResponse<IEnumerable<ListBookOfCombo>>
+                return new ServiceResponse<IEnumerable<ListPhysicalBookOfCombo>>
                 {
                     Message = "No combo detail has found",
                     Success = true,
                     StatusCode = 200
                 };
             }
-            return new ServiceResponse<IEnumerable<ListBookOfCombo>>
+            return new ServiceResponse<IEnumerable<ListPhysicalBookOfCombo>>
             {
                 Data = convertedList,
                 Message = "Successfully",

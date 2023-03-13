@@ -77,7 +77,23 @@ namespace Service.Mapping
 
             //Map Detail ComboBook
             CreateMap<DetailComboBook, ComboBookDTO>().ReverseMap();
-            CreateMap<DetailComboBook, ListBookOfCombo>().ForMember(dto => dto.Book, act => act.MapFrom(obj => obj.Book));
+            CreateMap<DetailComboBook, ListPhysicalBookOfCombo>().ForMember(dto => dto.Book, act => act.MapFrom(obj => obj.Book));
+            CreateMap<DetailComboBook, ListEBookOfCombo>()
+                .ForMember(dto => dto.EbookId, act => act.MapFrom(obj => obj.Ebook.EbookId))
+                .ForMember(dto => dto.Price, act => act.MapFrom(obj => obj.Ebook.Price))
+                .ForMember(dto => dto.PdfUrl, act => act.MapFrom(obj => obj.Ebook.PdfUrl))
+                .ForMember(dto => dto.Name, act => act.MapFrom(obj => obj.Ebook.Name))
+                .ForMember(dto => dto.Isbn, act => act.MapFrom(obj => obj.Ebook.Isbn))
+                .ForMember(dto => dto.Author, act => act.MapFrom(obj => obj.Ebook.Author))
+                .ForMember(dto => dto.ReleaseYear, act => act.MapFrom(obj => obj.Ebook.ReleaseYear))
+                .ForMember(dto => dto.Version, act => act.MapFrom(obj => obj.Ebook.Version))
+                .ForMember(dto => dto.Description, act => act.MapFrom(obj => obj.Ebook.Description))
+                .ForMember(dto => dto.AmountSold, act => act.MapFrom(obj => obj.Ebook.AmountSold))
+                .ForMember(dto => dto.IsActive, act => act.MapFrom(obj => obj.Ebook.IsActive))
+                .ForMember(dto => dto.CategoryId, act => act.MapFrom(obj => obj.Ebook.CategoryId))
+                .ForMember(dto => dto.PublisherId, act => act.MapFrom(obj => obj.Ebook.PublisherId))
+                .ForMember(dto => dto.CategoryName, act => act.MapFrom(obj => obj.Ebook.Category.Name))
+                .ForMember(dto => dto.PublisherName, act => act.MapFrom(obj => obj.Ebook.Publisher.Name));
             CreateMap<DetailComboBook, DetailComboBookDtoShow>()
                 .ForMember(dto => dto.ComboName, act => act.MapFrom(obj => obj.ComboBook.Name))
                 .ForMember(dto => dto.BookName, act => act.MapFrom(obj => obj.Book.Name))
@@ -85,6 +101,13 @@ namespace Service.Mapping
                 .ForMember(dto => dto.BookAuthor, act => act.MapFrom(obj => obj.Book.Author))
                 .ForMember(dto => dto.CategoryName, act => act.MapFrom(obj => obj.Book.Category.Name))
                 .ForMember(dto => dto.PublisherName, act => act.MapFrom(obj => obj.Book.Publisher.Name));
+            CreateMap<DetailComboBook, DetailComboEBookDtoShow>()
+                .ForMember(dto => dto.ComboName, act => act.MapFrom(obj => obj.ComboBook.Name))
+                .ForMember(dto => dto.EBookName, act => act.MapFrom(obj => obj.Ebook.Name))
+                .ForMember(dto => dto.EBookIsbn, act => act.MapFrom(obj => obj.Ebook.Isbn))
+                .ForMember(dto => dto.EBookAuthor, act => act.MapFrom(obj => obj.Ebook.Author))
+                .ForMember(dto => dto.CategoryName, act => act.MapFrom(obj => obj.Ebook.Category.Name))
+                .ForMember(dto => dto.PublisherName, act => act.MapFrom(obj => obj.Ebook.Publisher.Name));
         }
     }
 }

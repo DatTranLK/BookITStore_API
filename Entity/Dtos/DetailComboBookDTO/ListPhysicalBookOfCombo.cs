@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Entity.Dtos.DetailComboBookDTO
 {
-    public class ListBookOfCombo
+    public class ListPhysicalBookOfCombo
     {
         
         public BookDto Book { get; set; }
