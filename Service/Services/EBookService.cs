@@ -220,24 +220,30 @@ namespace Service.Services
             }
         }*/
 
-        public async Task<ServiceResponse<EBookDto>> GetEBookById(int id)
+        public async Task<ServiceResponse<EBookDetailDto>> GetEBookById(int id)
         {
             try
             {
-                var ebook = await _eBookRepository.GetByWithCondition(x => x.EbookId == id, null, true);
+                List<Expression<Func<Ebook, object>>> includes = new List<Expression<Func<Ebook, object>>>
+                {
+                    x => x.BookImages,
+                    x => x.Category,
+                    x => x.Publisher
+                };
+                var ebook = await _eBookRepository.GetByWithCondition(x => x.EbookId == id, includes, true);
                 var _mapper = config.CreateMapper();
-                var ebookDto = _mapper.Map<EBookDto>(ebook);
+                var ebookDto = _mapper.Map<EBookDetailDto>(ebook);
                 if (ebook == null)
                 {
 
-                    return new ServiceResponse<EBookDto>
+                    return new ServiceResponse<EBookDetailDto>
                     {
                         Message = "No rows",
                         StatusCode = 200,
                         Success = true
                     };
                 }
-                return new ServiceResponse<EBookDto>
+                return new ServiceResponse<EBookDetailDto>
                 {
                     Data = ebookDto,
                     Message = "Successfully",
