@@ -57,6 +57,9 @@ namespace Service.Mapping
             CreateMap<Ebook, EBookDtoForAdmin>()
                 .ForMember(dto => dto.CategoryName, act => act.MapFrom(obj => obj.Category.Name))
                 .ForMember(dto => dto.PublisherName, act => act.MapFrom(obj => obj.Publisher.Name));
+            CreateMap<Ebook, EBookDetailDto>().ForMember(dto => dto.ImgPath, act => act.MapFrom(obj => obj.BookImages.FirstOrDefault().ImgPath));
+
+
 
             CreateMap<Book, BookShowDto>().ForMember(dto => dto.ImgPath, act => act.MapFrom(obj => obj.BookImages.FirstOrDefault().ImgPath));
             CreateMap<Ebook, EBookShowDtoVer2>()

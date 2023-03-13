@@ -62,7 +62,7 @@ namespace Bookstore_API_JFF.Controllers
         [Produces("application/json")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
-        public async Task<ActionResult<ServiceResponse<Ebook>>> GetEBookById(int id)
+        public async Task<ActionResult<ServiceResponse<EBookDetailDto>>> GetEBookById(int id)
         {
             try
             {

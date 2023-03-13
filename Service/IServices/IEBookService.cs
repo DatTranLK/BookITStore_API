@@ -13,7 +13,7 @@ namespace Service.IServices
     {
         Task<ServiceResponse<IEnumerable<EBookDto>>> GetEBooksWithPagination(int page, int pageSize);
         Task<ServiceResponse<int>> CountAll();
-        Task<ServiceResponse<EBookDto>> GetEBookById(int id);
+        Task<ServiceResponse<EBookDetailDto>> GetEBookById(int id);
         /*Task<ServiceResponse<EBookDto>> GetEBookByBookId(int bookId);*/
         Task<ServiceResponse<int>> CreateNewEBook(EBookDto eBookDto);
         Task<ServiceResponse<string>> ChangeInformationOfEBook(int id, EBookDtoForUpdate eBookDtoForUpdate);
