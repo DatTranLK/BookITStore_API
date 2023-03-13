@@ -110,12 +110,24 @@ namespace Service.Services
                             else if (item.ComboBookId != null)
                             {
                                 var lstdetailComboBook = await _detailComboBookRepository.GetByCondition(x => x.ComboBookId == item.ComboBookId);
-                                foreach (var itemInList in lstdetailComboBook)
+                                if (lstdetailComboBook.FirstOrDefault().EbookId == null)
                                 {
-                                    var getBookByBookId = await _bookRepository.GetById(itemInList.BookId);
-                                    getBookByBookId.Amount -= item.Quantity;
-                                    getBookByBookId.AmountSold += item.Quantity;
-                                    await _bookRepository.Save();
+                                    foreach (var itemInList in lstdetailComboBook)
+                                    {
+                                        var getBookByBookId = await _bookRepository.GetById(itemInList.BookId);
+                                        getBookByBookId.Amount -= item.Quantity;
+                                        getBookByBookId.AmountSold += item.Quantity;
+                                        await _bookRepository.Save();
+                                    }
+                                }
+                                else if(lstdetailComboBook.FirstOrDefault().BookId == null)
+                                {
+                                    foreach (var itemInList in lstdetailComboBook)
+                                    {
+                                        var getEBookByEookId = await _eBookRepository.GetById(itemInList.EbookId);
+                                        getEBookByEookId.AmountSold += item.Quantity;
+                                        await _eBookRepository.Save();
+                                    }
                                 }
                             }
                         }
@@ -260,6 +272,25 @@ namespace Service.Services
                     else
                     {
                         var list = new List<string>();
+                        var lstComboBookInOrderDetail = lstOrderDetailFromOrderId.Where(x => x.ComboBookId != null).ToList();
+                        if(lstComboBookInOrderDetail != null)
+                        {
+                            foreach(var item2 in lstComboBookInOrderDetail)
+                            {
+                                var lstEBookFromCombo = await _detailComboBookRepository.GetByCondition(x => x.EbookId != null);
+                                if(lstEBookFromCombo != null)
+                                {
+                                    foreach (var item3 in lstEBookFromCombo)
+                                    {
+                                        var getObjectEBook = await _eBookRepository.GetById(item3.EbookId);
+                                        if(getObjectEBook != null)
+                                        {
+                                            list.Add(getObjectEBook.PdfUrl.ToString());
+                                        }
+                                    }
+                                }
+                            }
+                        }
                         foreach (var item in lstOrderDetailFromOrderId)
                         {
                             if (item.EbookId != null)
@@ -395,21 +426,33 @@ namespace Service.Services
                         }
                         else if (item.EbookId != null)
                         {
-                            var ebook = await _eBookRepository.GetByWithCondition(x => x.EbookId == item.EbookId, null, true);
-                            var book = await _bookRepository.GetById(ebook.EbookId);
-                            book.AmountSold += item.Quantity;
-                            await _bookRepository.Save();
+                            var ebook = await _eBookRepository.GetById(item.EbookId);
+                            ebook.AmountSold += item.Quantity;
+                            await _eBookRepository.Save();
                             list.Add(ebook.PdfUrl.ToString());
                         }
                         else if (item.ComboBookId != null)
                         {
                             var lstdetailComboBook = await _detailComboBookRepository.GetByCondition(x => x.ComboBookId == item.ComboBookId);
-                            foreach (var itemInList in lstdetailComboBook)
+                            if (lstdetailComboBook.FirstOrDefault().EbookId == null) 
                             {
-                                var getBookByBookId = await _bookRepository.GetById(itemInList.BookId);
-                                getBookByBookId.Amount -= item.Quantity;
-                                getBookByBookId.AmountSold += item.Quantity;
-                                await _bookRepository.Save();
+                                foreach (var itemInList in lstdetailComboBook)
+                                {
+                                    var getBookByBookId = await _bookRepository.GetById(itemInList.BookId);
+                                    getBookByBookId.Amount -= item.Quantity;
+                                    getBookByBookId.AmountSold += item.Quantity;
+                                    await _bookRepository.Save();
+                                }
+                            }
+                            else if(lstdetailComboBook.FirstOrDefault().BookId == null)
+                            {
+                                foreach (var itemInList in lstdetailComboBook)
+                                {
+                                    var getEBookByEBookId = await _eBookRepository.GetById(itemInList.EbookId);
+                                    getEBookByEBookId.AmountSold += item.Quantity;
+                                    await _eBookRepository.Save();
+                                    list.Add(getEBookByEBookId.PdfUrl.ToString());
+                                }
                             }
                         }
                     }
