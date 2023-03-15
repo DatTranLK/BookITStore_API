@@ -33,8 +33,10 @@ namespace Service.Mapping
                 .ForMember(dto => dto.ComboBookName, act => act.MapFrom(obj => obj.ComboBook.Name))
                 .ForMember(dto => dto.PriceCombo, act => act.MapFrom(obj => obj.ComboBook.PriceReduction));
             CreateMap<BookImage, BookImageDto>().
-                ForMember(dto => dto.BookName, act => act.MapFrom(obj => obj.Book.Name));
-            CreateMap<Book, BookDto>()
+                ForMember(dto => dto.BookName, act => act.MapFrom(obj => obj.Book.Name))
+                .ForMember(dto => dto.EBookName, act => act.MapFrom(obj => obj.Ebook.Name));
+
+			CreateMap<Book, BookDto>()
                 .ForMember(dto => dto.CategoryName, act => act.MapFrom(obj => obj.Category.Name))
                 .ForMember(dto => dto.PublisherName, act => act.MapFrom(obj => obj.Publisher.Name));
             CreateMap<Book, BookDtoForAdmin>()
