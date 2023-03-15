@@ -157,7 +157,41 @@ namespace Service.Services
             }
         }
 
-        public async Task<ServiceResponse<BookImageDto>> GetBookImageById(int id)
+		public async Task<ServiceResponse<IEnumerable<BookImageDto>>> GetBookImageByEBookId(int ebookId)
+		{
+			try
+			{
+				List<Expression<Func<BookImage, object>>> includes = new List<Expression<Func<BookImage, object>>>
+				{
+					e => e.Ebook,
+				};
+				var bookImages = await _bookImageRepository.GetAllWithCondition(e => e.EbookId == ebookId, includes, null, true);
+				var mapper = config.CreateMapper();
+				var bookImageDto = mapper.Map<IEnumerable<BookImageDto>>(bookImages);
+				if (bookImages.Count() <= 0)
+				{
+					return new ServiceResponse<IEnumerable<BookImageDto>>
+					{
+						Message = "No rows",
+						Success = true,
+						StatusCode = 200,
+					};
+				}
+				return new ServiceResponse<IEnumerable<BookImageDto>>
+				{
+					Data = bookImageDto,
+					Success = true,
+					Message = "Succesfully",
+					StatusCode = 200,
+				};
+			}
+			catch (Exception ex)
+			{
+				throw new Exception(ex.Message);
+			}
+		}
+
+		public async Task<ServiceResponse<BookImageDto>> GetBookImageById(int id)
         {
             try
             {

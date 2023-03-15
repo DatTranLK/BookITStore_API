@@ -12,7 +12,8 @@ namespace Service.IServices
     {
         Task<ServiceResponse<IEnumerable<BookImageDto>>> GetBookImageWithPagination(int page, int pageSize);
         Task<ServiceResponse<IEnumerable<BookImageDto>>> GetBookImageByBookId(int bookId);
-        Task<ServiceResponse<BookImageDto>> GetBookImageById(int id);
+		Task<ServiceResponse<IEnumerable<BookImageDto>>> GetBookImageByEBookId(int ebookId);
+		Task<ServiceResponse<BookImageDto>> GetBookImageById(int id);
         Task<ServiceResponse<int>> CountBookImages();
         Task<ServiceResponse<string>> DeleteBookImage(int id);
         Task<ServiceResponse<int>> CreateNewBookImage(BookImage bookImage);

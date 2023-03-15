@@ -72,7 +72,25 @@ namespace Bookstore_API_JFF.Controllers
             }
         }
 
-        [HttpGet("book-image/{bookImageId}", Name = "GetBookImageById")]
+		[HttpGet("book-image/ebook/{ebookId}", Name = "GetBookImageByEBookId")]
+		[Produces("application/json")]
+		[ProducesResponseType((int)HttpStatusCode.OK)]
+		[ProducesResponseType((int)HttpStatusCode.NotFound)]
+		public async Task<ActionResult<ServiceResponse<IEnumerable<BookImageDto>>>> GetBookImageByEBookId(int ebookId)
+		{
+			try
+			{
+				var res = await _bookImageService.GetBookImageByEBookId(ebookId);
+				return StatusCode((int)res.StatusCode, res);
+			}
+			catch (Exception ex)
+			{
+
+				return StatusCode(500, "Internal server error: " + ex.Message); ;
+			}
+		}
+
+		[HttpGet("book-image/{bookImageId}", Name = "GetBookImageById")]
         [Produces("application/json")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
