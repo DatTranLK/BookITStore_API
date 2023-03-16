@@ -14,5 +14,6 @@ namespace Entity.Dtos.Book
         public string ImgPath { get; set; }
         public string CategoryName { get; set; }
         public string PublisherName { get; set; }
+        public int? Amount { get; set; }
     }
 }
