@@ -233,6 +233,37 @@ namespace Service.Services
             }
         }
 
+        public async Task<ServiceResponse<IEnumerable<TopSelling>>> Get10BooksOfTopSelling()
+        {
+            try
+            {
+                var lst = await _bookRepository.GetAllWithCondition(null, null, x => (int)x.AmountSold, true);
+                var _mapper = config.CreateMapper();
+                var lstDto = _mapper.Map<IEnumerable<TopSelling>>(lst);
+                if(lst.Count() <= 0)
+                {
+                    return new ServiceResponse<IEnumerable<TopSelling>>
+                    { 
+                        Message = "No rows",
+                        Success = true,
+                        StatusCode = 200
+                    };
+                }
+                return new ServiceResponse<IEnumerable<TopSelling>>
+                {
+                    Data = lstDto.Take(10),
+                    Message = "Successfully",
+                    Success = true,
+                    StatusCode = 200
+                };
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception(ex.Message);
+            }
+        }
+
         public async Task<ServiceResponse<BookDto>> GetBookById(int id)
         {
             try
