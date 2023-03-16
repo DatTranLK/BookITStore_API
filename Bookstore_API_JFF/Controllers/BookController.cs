@@ -253,6 +253,22 @@ namespace Bookstore_API_JFF.Controllers
                 return StatusCode(500, "Internal server error: " + ex.Message);
             }
         }
-                
+        [HttpGet("admin/dashboard/top-selling", Name = "GetTop10SellingPhysicalBook")]
+        [Produces("application/json")]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        public async Task<ActionResult<ServiceResponse<IEnumerable<TopSelling>>>> GetTop10SellingPhysicalBook()
+        {
+            try
+            {
+                var res = await _bookService.Get10BooksOfTopSelling();
+                return StatusCode((int)res.StatusCode, res);
+            }
+            catch (Exception ex)
+            {
+
+                return StatusCode(500, "Internal server error: " + ex.Message);
+            }
+        }
     }
 }
