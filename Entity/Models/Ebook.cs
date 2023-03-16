@@ -30,14 +30,14 @@ namespace Entity.Models
         public string PdfUrl { get; set; }
 
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public virtual Category Category { get; set; }
+        public virtual Category? Category { get; set; }
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public virtual Publisher Publisher { get; set; }
+        public virtual Publisher? Publisher { get; set; }
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public virtual ICollection<BookImage> BookImages { get; set; }
+        public virtual ICollection<BookImage>? BookImages { get; set; }
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public virtual ICollection<DetailComboBook> DetailComboBooks { get; set; }
+        public virtual ICollection<DetailComboBook>? DetailComboBooks { get; set; }
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public virtual ICollection<OrderDetail> OrderDetails { get; set; }
+        public virtual ICollection<OrderDetail>? OrderDetails { get; set; }
     }
 }

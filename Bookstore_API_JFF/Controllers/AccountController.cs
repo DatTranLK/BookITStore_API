@@ -1,4 +1,5 @@
 ﻿using Entity.Dtos.Account;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Service;
 using Service.IServices;
@@ -10,6 +11,7 @@ using System.Threading.Tasks;
 
 namespace Bookstore_API_JFF.Controllers
 {
+    [Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin")]
     [Route("api/accounts")]
     [ApiController]
     public class AccountController : ControllerBase
@@ -20,7 +22,7 @@ namespace Bookstore_API_JFF.Controllers
         {
             _accountService = accountService;
         }
-
+        
         [HttpGet(Name = "GetAccounts")]
         [Produces("application/json")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
@@ -38,7 +40,6 @@ namespace Bookstore_API_JFF.Controllers
                 return StatusCode(500, "Internal server error: " + ex.Message);
             }
         }
-
         [HttpGet("count", Name = "CountAccounts")]
         [Produces("application/json")]
         [ProducesResponseType((int)HttpStatusCode.OK)]

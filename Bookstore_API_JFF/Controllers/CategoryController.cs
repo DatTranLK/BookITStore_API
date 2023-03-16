@@ -1,5 +1,6 @@
 ﻿using Entity.Dtos.Category;
 using Entity.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Service;
@@ -11,6 +12,7 @@ using System.Threading.Tasks;
 
 namespace Bookstore_API_JFF.Controllers
 {
+/*    [Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin")]*/
     [Route("api/categories")]
     [ApiController]
     public class CategoryController : ControllerBase
@@ -89,6 +91,7 @@ namespace Bookstore_API_JFF.Controllers
                 return StatusCode(500, "Internal server error: " + ex.Message);
             }
         }
+        [Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin")]
         [HttpPut("category", Name = "UpdateCategory")]
         [Produces("application/json")]
         [ProducesResponseType((int)HttpStatusCode.NoContent)]
@@ -106,6 +109,7 @@ namespace Bookstore_API_JFF.Controllers
                 return StatusCode(500, "Internal server error: " + ex.Message);
             }
         }
+        [Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin")]
         [HttpPost("category", Name = "CreateNewCategory")]
         [Produces("application/json")]
         [ProducesResponseType((int)HttpStatusCode.Created)]

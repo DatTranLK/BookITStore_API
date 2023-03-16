@@ -157,14 +157,14 @@ namespace Service.Services
             }
         }
 
-        public async Task<ServiceResponse<int>> CreateNewEBook(EBookDto eBookDto)
+        public async Task<ServiceResponse<int>> CreateNewEBook(Ebook eBook)
         {
             try
             {
                 //Validation in here 
                 //Starting insert into Db
-                var mapper = config.CreateMapper();
-                var eBook = mapper.Map<Ebook>(eBookDto);
+                /*var mapper = config.CreateMapper();
+                var eBook = mapper.Map<Ebook>(eBookDto);*/
                 eBook.IsActive = true;
                 eBook.AmountSold = 0;
                 await _eBookRepository.Insert(eBook);

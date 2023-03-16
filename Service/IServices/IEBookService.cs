@@ -15,7 +15,7 @@ namespace Service.IServices
         Task<ServiceResponse<int>> CountAll();
         Task<ServiceResponse<EBookDetailDto>> GetEBookById(int id);
         /*Task<ServiceResponse<EBookDto>> GetEBookByBookId(int bookId);*/
-        Task<ServiceResponse<int>> CreateNewEBook(EBookDto eBookDto);
+        Task<ServiceResponse<int>> CreateNewEBook(Ebook eBook);
         Task<ServiceResponse<string>> ChangeInformationOfEBook(int id, EBookDtoForUpdate eBookDtoForUpdate);
 
         Task<ServiceResponse<IEnumerable<EBookDtoForAdmin>>> GetEBookWithPagination(int page, int pageSize);
