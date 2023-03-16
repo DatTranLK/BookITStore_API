@@ -1,6 +1,7 @@
 ﻿using Entity.Dtos.Book;
 using Entity.Dtos.EBook;
 using Entity.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Service;
@@ -90,6 +91,7 @@ namespace Bookstore_API_JFF.Controllers
                 return StatusCode(500, "Internal server error: " + ex.Message);
             }
         }
+        [Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin")]
         [HttpPut("book", Name = "UpdateBook")]
         [Produces("application/json")]
         [ProducesResponseType((int)HttpStatusCode.NoContent)]
@@ -111,6 +113,7 @@ namespace Bookstore_API_JFF.Controllers
         /// Add New Physical Book
         /// </summary>
         /// 
+        [Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin")]
         [HttpPost("book", Name = "CreateNewPhysicalBook")]
         [Produces("application/json")]
         [ProducesResponseType((int)HttpStatusCode.Created)]
@@ -253,6 +256,7 @@ namespace Bookstore_API_JFF.Controllers
                 return StatusCode(500, "Internal server error: " + ex.Message);
             }
         }
+        [Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin")]
         [HttpGet("admin/dashboard/top-selling", Name = "GetTop10SellingPhysicalBook")]
         [Produces("application/json")]
         [ProducesResponseType((int)HttpStatusCode.OK)]

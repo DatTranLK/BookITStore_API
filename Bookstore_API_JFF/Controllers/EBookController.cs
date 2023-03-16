@@ -1,6 +1,7 @@
 ﻿using Entity.Dtos.Book;
 using Entity.Dtos.EBook;
 using Entity.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Service;
@@ -79,15 +80,16 @@ namespace Bookstore_API_JFF.Controllers
         /// Add New EBook
         /// </summary>
         ///
+        [Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin")]
         [HttpPost("ebook", Name = "CreateNewEBook")]
         [Produces("application/json")]
         [ProducesResponseType((int)HttpStatusCode.Created)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public async Task<ActionResult<ServiceResponse<int>>> CreateNewEBook([FromBody]EBookDto ebookDto)
+        public async Task<ActionResult<ServiceResponse<int>>> CreateNewEBook([FromBody] Ebook ebook)
         {
             try
             {
-                var res = await _eBookService.CreateNewEBook(ebookDto);
+                var res = await _eBookService.CreateNewEBook(ebook);
                 return StatusCode((int)res.StatusCode, res);
             }
             catch (Exception ex)
@@ -100,6 +102,7 @@ namespace Bookstore_API_JFF.Controllers
         /// Update EBook
         /// </summary>
         ///
+        [Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin")]
         [HttpPut("ebook", Name = "UpdateEBook")]
         [Produces("application/json")]
         [ProducesResponseType((int)HttpStatusCode.NoContent)]

@@ -8,6 +8,7 @@ using System;
 using Service.IServices;
 using Entity.Dtos.Publisher;
 using Entity.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Bookstore_API_JFF.Controllers
 {
@@ -106,6 +107,7 @@ namespace Bookstore_API_JFF.Controllers
                 return StatusCode(500, "Internal server error: " + ex.Message);
             }
         }
+        [Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin")]
         [HttpPost("publisher", Name = "CreatePublisher")]
         [Produces("application/json")]
         [ProducesResponseType((int)HttpStatusCode.Created)]
